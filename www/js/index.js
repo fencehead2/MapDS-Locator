@@ -1,46 +1,102 @@
-/*
- * Licensed to the Apache Software Foundation (ASF) under one
- * or more contributor license agreements.  See the NOTICE file
- * distributed with this work for additional information
- * regarding copyright ownership.  The ASF licenses this file
- * to you under the Apache License, Version 2.0 (the
- * "License"); you may not use this file except in compliance
- * with the License.  You may obtain a copy of the License at
- *
- * http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing,
- * software distributed under the License is distributed on an
- * "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
- * KIND, either express or implied.  See the License for the
- * specific language governing permissions and limitations
- * under the License.
- */
-var app = {
+//device management of the app
+var device = {
     initialize: function () {
         this.bind();
     },
     bind: function () {
         document.addEventListener('deviceready', this.deviceready, false);
+        document.addEventListener("offline", this.deviceoffline, false);
+        document.addEventListener("online", this.deviceonline, false);
     },
     deviceready: function () {
-        // This is an event handler function, which means the scope is the event.
-        // So, we must explicitly called `app.report()` instead of `this.report()`.
-        //app.report('deviceready');
+        //when the device is ready
+    },
+    deviceoffline: function () {
+        //when the device is offline
+        alert('device offline');
+    },
+    deviceonline: function () {
+        //when the device is online
+        alert('device online');
+    }
+};
 
-        //redirect app to main app
-        window.location = 'http://clientapps.nowwhere.com.au/bp/mobile';
+//page management of the app
+var pageManager = {
+    pages: [
+        {
+            id: 'home',
+            name: 'Home',
+            template: '',
+            events: function () {
+
+            }
+        },
+        {
+            id: 'selectaddress',
+            name: 'Select Address',
+            template: '',
+            events: function () {
+
+            }
+        },
+        {
+            id: 'resultslist',
+            name: 'Results',
+            template: '',
+            events: function () {
+
+            }
+        },
+        {
+            id: 'resultsmap',
+            name: 'Results',
+            template: '',
+            events: function () {
+
+            }
+        },
+        {
+            id: '{{id}}',
+            name: 'Details',
+            template: '',
+            events: function () {
+
+            }
+        }
+    ],
+    baseURL: null,
+    currentPageId: null,
+    previousPageId: null,
+    initialize: function (pages) {
+        if (pages) {
+            $.extend(this, pages);
+        }
+    }
+};
+
+//locator functionality of the app
+var locator = {
+
+    waypoints: [],
+    directions: function (waypoints) {
 
     },
-    report: function (id) {
-        // Report the event in the console
-        console.log("Report: " + id);
 
-        // Toggle the state from "pending" to "complete" for the reported ID.
-        // Accomplished by adding .hide to the pending element and removing
-        // .hide from the complete element.
-        document.querySelector('#' + id + ' .pending').className += ' hide';
-        var completeElem = document.querySelector('#' + id + ' .complete');
-        completeElem.className = completeElem.className.split('hide').join('');
+    currentLocation: function () {
+
+    },
+
+    lastGeocodeResult: {},
+    geocode: function (address, sucessCallback, failCallback) {
+
+    },
+
+    map: null,
+    startPosition: null,
+    startZoom: null,
+    initMap: function (selector, options) {
+
     }
+
 };
