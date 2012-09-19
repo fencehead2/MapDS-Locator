@@ -1,6 +1,21 @@
+//main app logic
+var app = {
+    initialize: function () {
+        device.initialize({
+            deviceready: function () {
+                //when the app has loaded
+                
+            }
+        });
+    }
+};
+
 //device management of the app
 var device = {
-    initialize: function () {
+    initialize: function (options) {
+        if (options) {
+            $.extend(this, options);
+        }
         this.bind();
     },
     bind: function () {
@@ -10,14 +25,15 @@ var device = {
     },
     deviceready: function () {
         //when the device is ready
+        console.log('device ready');
     },
     deviceoffline: function () {
         //when the device is offline
-        alert('device offline');
+        console.log('device offline');
     },
     deviceonline: function () {
         //when the device is online
-        alert('device online');
+        console.log('device online');
     }
 };
 
@@ -68,6 +84,27 @@ var pageManager = {
     baseURL: null,
     currentPageId: null,
     previousPageId: null,
+    getPage: function (id) {
+        //get page from page object
+        var page = null;
+        for (var i = 0; i < this.pages.length; i++) {
+            if (this.pages[i].id == id) {
+                page = this.pages[i];
+            }
+        }
+        return page;
+    },
+    renderPage: function (id) {
+        //render the page template into the container
+        var pageTemplate = this.getPage(id).template;
+
+    },
+    setPage: function (id) {
+        //set the current page for the app
+        this.previousPageId = this.currentPageId;
+        this.currentPageId = id;
+        this.renderPage(this.currentPageId);
+    },
     initialize: function (pages) {
         if (pages) {
             $.extend(this, pages);

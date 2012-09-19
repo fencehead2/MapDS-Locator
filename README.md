@@ -1,4 +1,0 @@
-MapDS-Locator
-=============
-
-MapDS Locator
