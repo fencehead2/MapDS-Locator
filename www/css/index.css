@@ -98,12 +98,13 @@ tbody
 .header table 
 {
     width: 100%;    
+    height: 50px;
 }
 .header table tr {}
 .header table tr td 
 {
     padding: 5px;   
-    height: 50px; 
+    height: 40px; 
 }
 .header table tr td ul 
 {
@@ -246,6 +247,8 @@ tbody
 .main #list ul li 
 {
     
+    cursor:pointer;
+    
     border-bottom: 1px solid #000000;
     list-style: none outside none;
     
@@ -322,12 +325,13 @@ tbody
 }
 .footer table 
 {
-    width: 100%;    
+    width: 100%;   
+    height: 50px; 
 }
 .footer table tr {}
 .footer table tr td 
 {
-    height: 50px;    
+    height: 40px;    
     padding: 5px;
 }
 .footer table tr td ul 
