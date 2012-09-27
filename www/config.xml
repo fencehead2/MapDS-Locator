@@ -22,6 +22,7 @@
     <preference name="fullscreen"       value="false" />
     <preference name="stay-in-webview" value="true" />
     <preference name="ios-statusbarstyle" value="black-opaque" />
+    <preference name="webviewbounce" value="false" />
 
     <icon src="icon.png" />
     <icon src="res/icon/android/icon-36-ldpi.png"   gap:platform="android"    gap:density="ldpi" />
