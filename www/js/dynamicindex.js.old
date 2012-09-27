@@ -1,0 +1,215 @@
+//main app logic
+var app = {
+    config: {},
+    initialize: function () {
+        device.initialize({
+            deviceready: function () {
+                //when the app has loaded
+                
+            }
+        });
+    }
+};
+
+//device management of the app
+var device = {
+    initialize: function (options) {
+        if (options) {
+            $.extend(this, options);
+        }
+        this.bind();
+    },
+    bind: function () {
+        document.addEventListener('deviceready', this.deviceready, false);
+        document.addEventListener("offline", this.deviceoffline, false);
+        document.addEventListener("online", this.deviceonline, false);
+    },
+    deviceready: function () {
+        //when the device is ready
+        console.log('device ready');
+    },
+    deviceoffline: function () {
+        //when the device is offline
+        console.log('device offline');
+    },
+    deviceonline: function () {
+        //when the device is online
+        console.log('device online');
+    }
+};
+
+//page management of the app
+var pageManager = {
+    pages: [
+        {
+            id: 'home',
+            name: 'Home',
+            template: '{{#logo}}<h1>{{#image}}<img src="{{image}}" alt="{{name}}" />{{/image}}</h1>{{/logo}}<ul>{{#menu}}<li class="{{safe_name}}"><a href="{{link}}">{{name}}</a></li>{{/menu}}</ul>',
+            topMenu: '{{#top}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle"><a href="#">{{title}}</a></td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/top}}',
+            bottomMenu: '{{#bottom}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle">{{#middle}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/middle}}</td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/bottom}}',
+            events: function () {
+
+            }
+        },
+        {
+            id: 'search',
+            name: 'Search',
+            template: '<ul><li><a id="findNearest" href="#findNearest">Find Nearest</a></li></ul><input type="text" id="findNearest-form" name="search" /><input type="submit" id="findNearest-button" name="search" /><div id="geocode-results-container"></div><div id="geocode-results-container">{{#geocodeResults}}{{#sucess}}<ul>{{#results}}<li id="{{id}}">{{name}}</li>{{/results}}</ul>{{^results}}<p>No results found, please try again.</p>{{/results}}{{/sucess}}{{^sucess}}<p>No results found, please try again.</p>{{/sucess}}{{/geocodeResults}}</div>',
+            topMenu: '{{#top}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle"><a href="#">{{title}}</a></td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/top}}',
+            bottomMenu: '{{#bottom}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle">{{#middle}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/middle}}</td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/bottom}}',
+            events: function () {
+
+            }
+        },
+        {
+            id: 'filters',
+            name: 'Filters',
+            template: '<ul>{{#filterGroups}}<li class="filter-heading">{{name}}</li>{{#fiters}}<li id="{{safe_name}}-filter" class="filter-item"><label for="{{safe_name}}-{{type}}">{{#image}}<img src="{{image}}" alt="{{name}}" />{{/image}}<span>{{name}}</span></label><input type="{{type}}" id="{{safe_name}}-{{type}}" name="{{safe_name}}" title="{{name}}" value="{{logic}}" /></li>{{/fiters}}{{/filterGroups}}</ul>',
+            topMenu: '{{#top}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle"><a href="#">{{title}}</a></td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/top}}',
+            bottomMenu: '{{#bottom}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle">{{#middle}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/middle}}</td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/bottom}}',
+            events: function () {
+
+            }
+        },
+        {
+            id: 'results',
+            name: 'Results',
+            template: '{{#map}}<div id="map"></div>{{/map}}{{#list}}<div id="list"><ul>{{#resultsItems}}<li><a href="#{{id}}"><span class="displayname">{{displayname}}</span><span class="address">{{shop_unit_no}}{{street}}{{suburb}}{{state}}{{postcode}}{{country}}</span></a></li>{{/resultsItems}}</ul></div>{{/list}}',
+            topMenu: '{{#top}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle"><a href="#">{{title}}</a></td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/top}}',
+            bottomMenu: '{{#bottom}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle">{{#middle}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/middle}}</td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/bottom}}',
+            events: function () {
+
+            }
+        },
+        {
+            id: 'details',
+            name: 'Details',
+            template: '<h2 class="displayname">{{displayname}}</h2><p class="address">{{shop_unit_no}}{{street}}{{suburb}}{{state}}{{postcode}}{{country}}</p>{{#phone}}<div id="callphone"><a href="tel:{{phone}}">{{phone}}</a></div>{{/phone}}<div id="getdirections">Get Directions</div>{{#propertiesGroups}}{{#name}}<ul><li class="details-name">{{#name}}</li>{{#properties}}<li class="details-item">{{#image}}<img src="{{image}}" alt="{{name}}" />{{/image}}<span>{{name}}</span></li>{{/properties}}</ul>{{/name}}{{/propertiesGroups}}',
+            topMenu: '{{#top}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle"><a href="#">{{title}}</a></td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/top}}',
+            bottomMenu: '{{#bottom}}<table><tr><td class="left">{{#left}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/left}}</td><td class="middle">{{#middle}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/middle}}</td><td class="right">{{#right}}<a href="{{link}}"><img src="{{icon}}" alt="{{name}}" /></a>{{/right}}</td></tr></table>{{/bottom}}',
+            events: function () {
+
+            }
+        }
+    ],
+    pagesConfig: [
+        {
+            id: 'home',
+            template: {},
+            topMenu: {},
+            bottomMenu: {}
+        },
+        {
+            id: 'search',
+            template: {},
+            topMenu: {},
+            bottomMenu: {}
+        },
+        {
+            id: 'filters',
+            template: {},
+            topMenu: {},
+            bottomMenu: {}
+        },
+        {
+            id: 'results',
+            template: {},
+            topMenu: {},
+            bottomMenu: {}
+        },
+        {
+            id: 'details',
+            template: {},
+            topMenu: {},
+            bottomMenu: {}
+        }
+    ],
+    pageContainerIDs: {
+        header: 'header',
+        main: 'main',
+        footer: 'footer'
+    },
+    baseURL: null,
+    currentPageId: null,
+    previousPageId: null,
+    getPageConfig: function (id) {
+        //get config from config object using id
+        var pageConfig = null;
+        for (var i = 0; i < this.pagesConfig.length; i++) {
+            if (this.pagesConfig[i].id == id) {
+                pageConfig = this.pagesConfig[i];
+            }
+        }
+        return pageConfig;
+    },
+    getPage: function (id) {
+        //get page from page object using id
+        var page = null;
+        for (var i = 0; i < this.pages.length; i++) {
+            if (this.pages[i].id == id) {
+                page = this.pages[i];
+            }
+        }
+        return page;
+    },
+    renderPage: function (id) {
+        
+        //get the javascript templates      
+        var headerTemplate = this.getPage(id).topMenu;
+        var mainTemplate = this.getPage(id).template;
+        var footerTemplate = this.getPage(id).bottomMenu;
+        
+        //get the json cofigs
+        var headerConfig = this.getPageConfig(id).topMenu;
+        var mainConfig = this.getPageConfig(id).template;
+        var footerConfig = this.getPageConfig(id).bottomMenu;
+        
+        //create the html
+        var headerHTML = Mustache.render(headerTemplate);
+        var mainHTML = Mustache.render(pageTemplate);
+        var footerHTML = Mustache.render(footerTemplate);
+        
+        //render the html into the containers
+        var headerContainer = this.pageContainerIDs.header;
+        var mainContainer = this.pageContainerIDs.main;
+        var footerContainer = this.pageContainerIDs.footer;
+
+    },
+    setPage: function (id) {
+        //set the current page for the app
+        this.previousPageId = this.currentPageId;
+        this.currentPageId = id;
+        this.renderPage(this.currentPageId);
+    },
+    initialize: function (config) {
+        if (config) {
+            $.extend(this, config);
+        }
+    }
+};
+
+//locator functionality of the app
+var locator = {
+
+    waypoints: [],
+    directions: function (waypoints) {
+
+    },
+
+    currentLocation: function () {
+
+    },
+
+    lastGeocodeResult: {},
+    geocode: function (address, sucessCallback, failCallback) {
+
+    },
+
+    map: null,
+    startPosition: null,
+    startZoom: null,
+    initMap: function (selector, options) {
+
+    }
+
+};

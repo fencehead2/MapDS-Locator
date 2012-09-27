@@ -1,5 +1,6 @@
 //main app logic
 var app = {
+    config: {},
     initialize: function () {
         device.initialize({
             deviceready: function () {
@@ -37,81 +38,6 @@ var device = {
     }
 };
 
-//page management of the app
-var pageManager = {
-    pages: [
-        {
-            id: 'home',
-            name: 'Home',
-            template: '',
-            events: function () {
-
-            }
-        },
-        {
-            id: 'selectaddress',
-            name: 'Select Address',
-            template: '',
-            events: function () {
-
-            }
-        },
-        {
-            id: 'resultslist',
-            name: 'Results',
-            template: '',
-            events: function () {
-
-            }
-        },
-        {
-            id: 'resultsmap',
-            name: 'Results',
-            template: '',
-            events: function () {
-
-            }
-        },
-        {
-            id: '{{id}}',
-            name: 'Details',
-            template: '',
-            events: function () {
-
-            }
-        }
-    ],
-    baseURL: null,
-    currentPageId: null,
-    previousPageId: null,
-    getPage: function (id) {
-        //get page from page object
-        var page = null;
-        for (var i = 0; i < this.pages.length; i++) {
-            if (this.pages[i].id == id) {
-                page = this.pages[i];
-            }
-        }
-        return page;
-    },
-    renderPage: function (id) {
-        //render the page template into the container
-        var pageTemplate = this.getPage(id).template;
-
-    },
-    setPage: function (id) {
-        //set the current page for the app
-        this.previousPageId = this.currentPageId;
-        this.currentPageId = id;
-        this.renderPage(this.currentPageId);
-    },
-    initialize: function (pages) {
-        if (pages) {
-            $.extend(this, pages);
-        }
-    }
-};
-
 //locator functionality of the app
 var locator = {
 
@@ -134,6 +60,12 @@ var locator = {
     startZoom: null,
     initMap: function (selector, options) {
 
+    },
+
+    initialize: function (config) {
+        if (config) {
+            $.extend(this, config);
+        }
     }
 
 };
