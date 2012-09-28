@@ -1,8 +1,5 @@
-* {
-    -webkit-touch-callout: none;                /* prevent callout to copy image, etc when tap to hold */
-    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */
-    -webkit-tap-highlight-color: rgba(0,0,0,0); /* make transparent link selection, adjust last value opacity 0 to 1.0 */
-    -webkit-user-select: none;                  /* prevent copy paste, to allow, change 'none' to 'text' */
+* {    
+    -webkit-text-size-adjust: none;             /* prevent webkit from resizing text to fit */    
 }
 
 body {      
@@ -13,59 +10,14 @@ body {
     padding:0px;
     text-transform: none;
     width:100%;
+    background-attachment: scroll;
+    background-clip: border-box;
+    background-color: #FFFFFF;
+    background-image: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/grey.png");
+    background-origin: padding-box;
+    background-position: center center;
+    background-repeat: repeat;
 }
-
-/* LINKS   
-----------------------------------------------------------
-a
-{
-    color: #007833;
-    text-decoration: none;
-}
-a:hover
-{
-    text-decoration: underline;
-}
-p, ul
-{
-    margin-bottom: 20px;
-    line-height: 1.6em;
-}
-header, footer, nav, section
-{
-    display: block;
-}
-*/
-/* HEADINGS   
-----------------------------------------------------------
-h1, h2, h3, h4, h5, h6
-{
-    color: #007833;
-    font-size: 1.5em;    
-}
-h1
-{
-    font-size: 2em;
-    padding-bottom: 0;
-    margin-bottom: 0;
-}
-h2
-{
-    padding: 0 0 10px 0;
-}
-h3
-{
-    font-size: 1.2em;
-}
-h4
-{
-    font-size: 1.1em;
-}
-h5, h6
-{
-    font-size: 1em;
-}
-*/
 table 
 {
     border-collapse: collapse;
@@ -148,13 +100,13 @@ tbody
     text-transform: uppercase;    
 }
 
-
 /* MAIN
 ----------------------------------------------------------*/
 .main 
 {
     padding-bottom: 51px;
-    padding-top: 51px;    
+    padding-top: 51px;  
+    main-height: 369px;  
 }
 .main #search 
 {
@@ -191,6 +143,7 @@ tbody
     -webkit-border-radius: 14px;
     border-radius: 14px; 
     z-index: 4px;
+    background: #ffffff;
 }
 .main #search form .input-append input:focus 
 {
@@ -206,15 +159,8 @@ tbody
 .main #searchResults 
 {
     display: none;
-    background: #7d7e7d; /* Old browsers */
-    background: -moz-linear-gradient(top, #7d7e7d 0%, #0e0e0e 100%); /* FF3.6+ */
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#7d7e7d), color-stop(100%,#0e0e0e)); /* Chrome,Safari4+ */
-    background: -webkit-linear-gradient(top, #7d7e7d 0%,#0e0e0e 100%); /* Chrome10+,Safari5.1+ */
-    background: -o-linear-gradient(top, #7d7e7d 0%,#0e0e0e 100%); /* Opera 11.10+ */
-    background: -ms-linear-gradient(top, #7d7e7d 0%,#0e0e0e 100%); /* IE10+ */
-    background: linear-gradient(to bottom, #7d7e7d 0%,#0e0e0e 100%); /* W3C */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 ); /* IE6-9 */        
-    opacity: 0.93;
+    background: #000000;
+    opacity: 0.85;
     position: absolute;
     width: 100%;
     z-index: 5;    
@@ -239,7 +185,10 @@ tbody
     text-decoration: none;
     cursor: pointer;
 }
-.main #list {}
+.main #list 
+{
+    display: none;    
+}
 .main #list ul 
 {
     margin: 0;    
@@ -298,7 +247,12 @@ tbody
     width: 50px;
 }
 
-.main #map {}
+.main #map 
+{
+    width: 100%;
+    /*default for iphone 4*/
+    height: 350px;
+}
 
 /* FOOTER
 ----------------------------------------------------------*/
@@ -365,4 +319,20 @@ tbody
     color: #FFF;    
     margin: 0;
     text-transform: none;
+}
+
+
+/* LOADING
+----------------------------------------------------------*/
+#loading 
+{
+    display: none;
+    position: absolute;    
+}
+
+/* DIRECTIONS
+----------------------------------------------------------*/
+.header table tr td ul.dropdown-menu 
+{
+    padding: 10px;    
 }
