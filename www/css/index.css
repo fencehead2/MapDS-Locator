@@ -13,7 +13,7 @@ body {
     background-attachment: scroll;
     background-clip: border-box;
     background-color: #FFFFFF;
-    background-image: url("http://subtlepatterns.subtlepatterns.netdna-cdn.com/patterns/grey.png");
+    background-image: url("http://subtlepatterns.com/patterns/crisp_paper_ruffles.png");
     background-origin: padding-box;
     background-position: center center;
     background-repeat: repeat;
@@ -252,6 +252,7 @@ tbody
     width: 100%;
     /*default for iphone 4*/
     height: 350px;
+    background-image: url("http://subtlepatterns.com/patterns/furley_bg.png");
 }
 
 /* FOOTER

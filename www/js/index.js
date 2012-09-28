@@ -2,23 +2,28 @@
 var locator = {
 
     spinner: null,
-    loading: function (isLoading, selector) {
+    loading: function (isLoading, selector, isPageLoader, settings) {
         selector = selector || '#loading';
         isLoading = isLoading == null ? true : isLoading;
+        isPageLoader = isPageLoader == null ? true : isPageLoader;
+        settings = settings || {
+            radius: 12,
+            height: 10,
+            width: 2,
+            dashes: 25,
+            opacity: 1,
+            padding: 3,
+            rotation: 250,
+            color: '#000000'
+        };
         if (isLoading == true) {
             $(selector).show();
-            this.spinner = Spinners.create(selector, {
-                radius: 12,
-                height: 10,
-                width: 2,
-                dashes: 25,
-                opacity: 1,
-                padding: 3,
-                rotation: 250,
-                color: '#000000'
-            }).play();
+            this.spinner = Spinners.create(selector, settings).play();
             this.spinner.center();
-            $(selector).css('top', '200px');
+            if (isPageLoader == true) {
+                var midScreen = (this.getWindowDimensions().height - 10) / 2;
+                $(selector).css('top', midScreen + 'px');
+            }
         } else {
             $(selector).hide();
             if (this.spinner) Spinners.get(selector).remove(); Spinners.removeDetached();
@@ -61,6 +66,25 @@ var locator = {
         }
     },
 
+    searchedLocationMarker: null,
+    searchedLocationMarkerSettings: {
+        img: '../www/img/current-location.png',
+        height: 25,
+        width: 25
+    },
+    createSearchedLocaitonMarker: function (lat, lng, searchedlocation) {
+        if (this.searchedLocationMarker != null) {
+            this.searchedLocationMarker.setMap(null);
+        }
+        var settings = {
+            position: new google.maps.LatLng(lat, lng),
+            map: this.map,
+            icon: new google.maps.MarkerImage(this.searchedLocationMarkerSettings.img, null, null, null, new google.maps.Size(this.searchedLocationMarkerSettings.width, this.searchedLocationMarkerSettings.height)),
+            title: searchedlocation
+        };
+        this.searchedLocationMarker = new google.maps.Marker(settings);
+    },
+
     initEvents: function () {
         var _SELF = this;
         $(window).resize(function () {
@@ -72,6 +96,52 @@ var locator = {
         $('.dropdown-toggle').click(function () {
             $('.dropdown-toggle').parent().find('ul').toggle();
         });
+        $('#current-location').click(function () {
+            $('#current-location').css('width', '44');
+            $('#current-location').css('height', '30');
+            $('#current-location').html('<div id="current-location-loading" ></div>');
+            _SELF.loading(true, '#current-location-loading', false, {
+                radius: 5,
+                height: 5,
+                width: 1,
+                dashes: 21,
+                opacity: 1,
+                padding: 3,
+                rotation: 250,
+                color: '#000000'
+            });
+            navigator.geolocation.getCurrentPosition(
+            //sucess
+                function (position) {
+                    if (_SELF.map && google) {
+                        _SELF.createSearchedLocaitonMarker(position.coords.latitude, position.coords.longitude, 'Current Location')
+                        _SELF.map.setCenter(new google.maps.LatLng(
+                            position.coords.latitude,
+                            position.coords.longitude
+                        ));
+                        _SELF.map.setZoom(16);
+                        _SELF.loading(false, '#current-location-loading', false);
+                        $('#current-location').html('<i class="icon-screenshot"></i>');
+                    }
+                },
+            //error
+                function (error) { },
+                { enableHighAccuracy: true, maximumAge: 0 }
+            );
+        });
+        $('#map-btn').click(function () {
+            $('#searchResults').hide();
+            $('#list').hide();
+            $('#map').show();
+            window.scrollTo(0, 0.5);
+        });
+        $('#list-btn').click(function () {
+            $('#searchResults').hide();
+            $('#map').hide();
+            $('#list').show();
+            window.scrollTo(0, 0.5);
+        });
+
     },
 
     waypoints: [],
@@ -110,7 +180,7 @@ var locator = {
                 zoomControl: false,
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
-            this.map = new google.maps.Map(document.getElementById(selector), options);                        
+            this.map = new google.maps.Map(document.getElementById(selector), options);
         } else {
             return null;
         }
@@ -120,7 +190,7 @@ var locator = {
         if (config) {
             $.extend(this, config);
         }
-        this.loading(true);        
+        this.loading(true);
         var _SELF = this;
         setTimeout(function () {
             _SELF.initMap();
@@ -132,4 +202,4 @@ var locator = {
 
 };
 locator.initialize();
-window.scrollTo(0, 1);
+window.scrollTo(0, 0.5);
