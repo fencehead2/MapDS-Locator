@@ -13,7 +13,7 @@ body {
     background-attachment: scroll;
     background-clip: border-box;
     background-color: #FFFFFF;
-    background-image: url("http://subtlepatterns.com/patterns/crisp_paper_ruffles.png");
+    background-image: url("http://subtlepatterns.com/patterns/furley_bg.png");
     background-origin: padding-box;
     background-position: center center;
     background-repeat: repeat;
@@ -178,6 +178,7 @@ tbody
     list-style: none outside none;
     padding: 10px;
     cursor: pointer;
+    color: #FFFFFF;
 }
 .main #searchResults ul li a 
 {
