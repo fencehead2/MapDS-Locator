@@ -68,33 +68,125 @@ var locator = {
 
     searchedLocationMarker: null,
     searchedLocationMarkerSettings: {
+        img: '../www/img/searched-location.png',
+        height: 40,
+        width: 32
+    },
+    currentLocationMarker: null,
+    currentLocationMarkerSettings: {
         img: '../www/img/current-location.png',
         height: 25,
         width: 25
     },
-    createSearchedLocaitonMarker: function (lat, lng, searchedlocation) {
+    createSearchedLocaitonMarker: function (lat, lng, searchedlocation, isCurrentLocation) {
+        //remove existing markers
+        if (this.currentLocationMarker != null) {
+            this.currentLocationMarker.setMap(null);
+        }
         if (this.searchedLocationMarker != null) {
             this.searchedLocationMarker.setMap(null);
         }
-        var settings = {
-            position: new google.maps.LatLng(lat, lng),
-            map: this.map,
-            icon: new google.maps.MarkerImage(this.searchedLocationMarkerSettings.img, null, null, null, new google.maps.Size(this.searchedLocationMarkerSettings.width, this.searchedLocationMarkerSettings.height)),
-            title: searchedlocation
-        };
-        this.searchedLocationMarker = new google.maps.Marker(settings);
+        //set marker settings
+        var settings = {};
+        if (isCurrentLocation == true) {
+            settings = {
+                position: new google.maps.LatLng(lat, lng),
+                map: this.map,
+                icon: new google.maps.MarkerImage(this.currentLocationMarkerSettings.img, null, null, null, new google.maps.Size(this.currentLocationMarkerSettings.width, this.currentLocationMarkerSettings.height)),
+                title: searchedlocation
+            };
+        } else {
+            settings = {
+                position: new google.maps.LatLng(lat, lng),
+                map: this.map,
+                icon: new google.maps.MarkerImage(this.searchedLocationMarkerSettings.img, null, null, null, new google.maps.Size(this.searchedLocationMarkerSettings.width, this.searchedLocationMarkerSettings.height)),
+                title: searchedlocation
+            };
+        }
+        this.currentLocationMarker = new google.maps.Marker(settings);
     },
 
+    find: function (address) {
+        var _SELF = this;
+        if (address != '' && address != null && address != 'Enter Suburb / Postcode...') {
+            (_SELF.directionsDisplay ? _SELF.directionsDisplay.setMap(null) : '');
+            if (address.toLowerCase() == 'current location') {
+                $('#current-location').trigger('click');
+                return null;
+            }
+            this.geocode(address, '', false, function (location) {
+                _SELF.geocodeResult = location;
+                $('#search-input').val(_SELF.geocodeResult.formatted_address);
+                _SELF.map.setCenter(new google.maps.LatLng(location.geometry.location.lat(), location.geometry.location.lng()));
+                _SELF.map.setZoom(14);
+                _SELF.createSearchedLocaitonMarker(location.geometry.location.lat(), location.geometry.location.lng(), _SELF.geocodeResult.formatted_address, false);
+                $('#search-input').blur();
+                //window.scrollTo(0, 0.5);
+            });
+        } else {
+            //error msg - input missing
+            $('#search-input').addClass('error');
+            $('#search-input').focus(function () {
+                $('#search-input').removeClass('error');
+            });
+        }
+    },
+
+    initInputEvents: function () {
+        $('.directionsitem input').blur(function () {
+            if ($(this).val() == '') {
+                $(this).addClass('blur');
+                $(this).val('Enter Suburb / Postcode');
+            }
+        });
+        $('.directionsitem input').focus(function () {
+            if ($(this).val() == 'Enter Suburb / Postcode') {
+                $(this).val('');
+                $(this).removeClass('blur');
+            }
+        });
+        $('input[type="text"]').unbind('keyup');
+        $('.clear-input').unbind('click');
+
+        $('input[type="text"]').keyup(function () {
+            var clearSelector = '#' + $(this).attr('id') + '-clear';
+            if ($(this).val().length > 0) {
+                $(clearSelector).show();
+            }
+            else {
+                $(clearSelector).hide();
+            }
+        });
+        $('.clear-input').click(function () {
+            $(this).hide();
+            var inputSelector = '#' + $(this).attr('id').replace('-clear', '');
+            $(inputSelector).val('');
+            $(inputSelector).blur();
+        });
+
+    },
     initEvents: function () {
         var _SELF = this;
+        _SELF.initInputEvents();
+        $('#searchBtnDir').click(function () {
+            _SELF.getDirections();
+        });
         $(window).resize(function () {
             _SELF.windowResize();
         });
-        $('#search').bind('keypress', function (e) {
-            $('#searchResults').show();
+        $('#search-input').bind('keypress', function (e) {
+            var code = (e.keyCode ? e.keyCode : e.which);
+            if (code == 13) {
+                _SELF.find($('#search-input').val());
+                return false;
+            }
+        });
+        $('#search-input-btn').click(function () {
+            _SELF.find($('#search-input').val());
+            return false;
         });
         $('.dropdown-toggle').click(function () {
-            $('.dropdown-toggle').parent().find('ul').toggle();
+            $('.dropdown-toggle').parent().find('.dropdown-menu').toggle();
         });
         $('#current-location').click(function () {
             $('#current-location').css('width', '44');
@@ -114,7 +206,8 @@ var locator = {
             //sucess
                 function (position) {
                     if (_SELF.map && google) {
-                        _SELF.createSearchedLocaitonMarker(position.coords.latitude, position.coords.longitude, 'Current Location')
+                        (_SELF.directionsDisplay ? _SELF.directionsDisplay.setMap(null) : '');
+                        _SELF.createSearchedLocaitonMarker(position.coords.latitude, position.coords.longitude, 'Current Location', true)
                         _SELF.map.setCenter(new google.maps.LatLng(
                             position.coords.latitude,
                             position.coords.longitude
@@ -122,6 +215,12 @@ var locator = {
                         _SELF.map.setZoom(16);
                         _SELF.loading(false, '#current-location-loading', false);
                         $('#current-location').html('<i class="icon-screenshot"></i>');
+                        $('#search-input').val('Current Location...');
+                        $('#search-input').addClass('current-location');
+                        $('#search-input').focus(function () {
+                            $('#search-input').removeClass('current-location');
+                            $('#search-input').val('');
+                        });
                     }
                 },
             //error
@@ -142,20 +241,376 @@ var locator = {
             window.scrollTo(0, 0.5);
         });
 
+        $('#addDestination').click(function () {
+            _SELF.directionsWaypointCount++;
+            _SELF.directionsWaypointId++;
+            if (_SELF.directionsWaypointCount <= 5) {
+                if (_SELF.directionsWaypointCount >= 5) {
+                    $('#addDestination').hide();
+                    $('#controlSeperator').hide();
+                } else {
+                    $('#addDestination').show();
+                    $('#controlSeperator').show();
+                }
+                var html = '<div class="directionsitem"><div class="directionsLabel" id="directionsLabel' + _SELF.directionsWaypointId.toString() + '"></div><input id="waypointInput' + _SELF.directionsWaypointId.toString() + '"type="text" value="Enter Suburb / Postcode" class="blur" /><div id="waypointInput' + _SELF.directionsWaypointId.toString() + '-clear" class="clear-input clear-input-dir"></div><div class="removeDirectionField tooltipw" title="Remove this destination"></div></div>';
+                $('#directionsFields').append(html);
+                $('#directionsFields .directionsitem input').css('width', '65%');
+                $('#directionsFields .directionsitem .directionsError').css('width', '65%');
+                $('.clear-input-dir').css('right', '42px');
+                if (_SELF.directionsWaypointCount > 2) {
+                    $('.removeDirectionField').show();
+                }
+                $('.removeDirectionField').unbind('click');
+                $('.removeDirectionField').click(function () {
+                    if (_SELF.directionsWaypointCount == 3) {
+                        $('.removeDirectionField').hide();
+                        $('#directionsFields .directionsitem input').css('width', '78%');
+                        $('#directionsFields .directionsitem .directionsError').css('width', '78%');
+                        $('.clear-input-dir').css('right', '18px');
+                    }
+                    if (_SELF.directionsWaypointCount > 2) {
+                        $(this).parent().remove();
+                        _SELF.directionsWaypointCount--;
+                    }
+                    _SELF.presentWaypointIcons(false);
+                    if (_SELF.directionsWaypointCount >= 5) {
+                        $('#addDestination').hide();
+                        $('#controlSeperator').hide();
+                    } else {
+                        $('#addDestination').show();
+                        $('#controlSeperator').show();
+                    }
+                });
+                _SELF.presentWaypointIcons(false);
+            }
+            _SELF.initInputEvents();
+        });
+        $('#hideShowDirOpt').click(function () {
+            if ($('#directionsOptions').hasClass('hidden')) {
+                $('#hideShowDirOpt').html('Hide Options');
+            } else {
+                $('#hideShowDirOpt').html('Show Options');
+                $('#avoidhighways').attr("checked", false);
+                $('#avoidtolls').attr("checked", false);
+            }
+            $('#directionsOptions').toggleClass('hidden');
+            if (!$('#advancedSearchToggle').hasClass('show')) {
+                $('#advancedSearchToggle').trigger('click');
+            }
+        });
     },
 
-    waypoints: [],
-    directions: function (waypoints) {
+    presentWaypointIcons: function () {
+        var waypointCount = 1;
+        $('#directionsFields .directionsitem .directionsLabel').each(function () {
+            $(this).html('');
+            $(this).append('<img class="directionsItemIcn" src="../www/img/markers/waypointIcon' + waypointCount + '.png" alt="" />');
+            $(this).css('background-repeat', 'no-repeat');
+            waypointCount++;
+        });
+    },
+    wayPoints: [],
+    directionsWaypointCount: 2,
+    directionsWaypointId: 1,
+    directionsDisplay: null,
+    getDirections: function () {
+        var _SELF = this;
+        //remove all pervious errors
+        _SELF.wayPoints = [];
+        $('#directionsFields .directionsitem').find('.directionsError').remove();
+        $('#directionsFields .directionsitem').find('input').removeClass('error');
+        $('#directionsFields .directionsitem input').each(function (key, val) {
+            var value = $(this).val();
+            if (value == '' || value == 'Enter Suburb / Postcode') {
+                $(this).parent().addClass('error');
+                $(this).addClass('error');
+                $(this).after('<div style="width: ' + $(this).width() + 'px;" class="errorMessage directionsError">Input a Suburb / Postcode</div>');
+                $(this).focus(function () {
+                    $(this).val('');
+                    $(this).removeClass('error');
+                    $(this).parent().removeClass('error');
+                    $(this).parent().find('.directionsError').remove();
+                });
+            }
+            var k = key;
+            _SELF.wayPoints.push({
+                address: value,
+                index: k,
+                geometry: null
+            });
+        });
+        for (var i = 0; i < _SELF.wayPoints.length; i++) {
+            if (_SELF.wayPoints[i].address != '' && _SELF.wayPoints[i].address != 'Enter Suburb / Postcode') {
 
+                var callback = function (location, waypointNumber) { };
+
+                _SELF.geocode(_SELF.wayPoints[i].address, i, true, function (location, waypointNumber) {
+
+                    _SELF.wayPoints[waypointNumber].geometry = location.geometry.location.lat().toString() + ',' + location.geometry.location.lng().toString();
+
+                    //all waypoints have been geocoded & there were no errors
+                    if (waypointNumber == _SELF.wayPoints.length - 1 && $('#directionsFields .directionsitem').find('.directionsError').length == 0) {
+                        var request = {
+                            travelMode: google.maps.DirectionsTravelMode.DRIVING,
+                            provideRouteAlternatives: false
+                        };
+                        var waypointsForRequest = [];
+                        var waypointCount = 0;
+                        var errors = 0;
+                        $.each(_SELF.wayPoints, function (id, wayPoint) {
+                            if (waypointCount == 0) {
+                                $.extend(request, { origin: wayPoint.geometry });
+                            }
+                            else if (waypointCount == _SELF.wayPoints.length - 1) {
+                                $.extend(request, { destination: wayPoint.geometry });
+                            } else {
+                                waypointsForRequest.push({ location: wayPoint.geometry });
+                            }
+                            waypointCount++;
+                            if (wayPoint.geometry == ',' || wayPoint.geometry == null || wayPoint.geometry == '') { errors++; }
+                        });
+
+                        $.extend(request, { waypoints: waypointsForRequest });
+
+                        if ($('#avoidhighways').attr("checked")) {
+                            $.extend(request, { avoidHighways: true });
+                        }
+                        if ($('#avoidtolls').attr("checked")) {
+                            $.extend(request, { avoidTolls: true });
+                        }
+
+                        if (errors == 0) {
+                            //perform directions request and display result
+                            _SELF.directionsService = (_SELF.directionsService ? _SELF.directionsService : new google.maps.DirectionsService());
+                            _SELF.directionsDisplay = (_SELF.directionsDisplay ? _SELF.directionsDisplay : new google.maps.DirectionsRenderer({ draggable: true }));
+                            _SELF.directionsDisplay.setMap(_SELF.map);
+
+                            _SELF.directionsService.route(request, function (response, status) {
+                                if (status == google.maps.DirectionsStatus.OK) {
+                                    $('.dropdown-menu').hide();
+                                    _SELF.directionsLegsDistance = [];
+                                    var legs = response.routes[0].legs;
+                                    for (var i = 0; i < legs.length; i++) {
+                                        var leg = legs[i];
+                                        _SELF.directionsLegsDistance.push({
+                                            distance: leg.distance,
+                                            duration: leg.duration
+                                        });
+                                    }
+                                    _SELF.directionsDisplay.setDirections(response);
+                                    google.maps.event.addListener(_SELF.directionsDisplay, 'directions_changed', function () {
+                                        var response = _SELF.directionsDisplay.getDirections();
+                                        _SELF.directionsLegsDistance = [];
+                                        var legs = response.routes[0].legs;
+                                        for (var i = 0; i < legs.length; i++) {
+                                            var leg = legs[i];
+                                            _SELF.directionsLegsDistance.push({
+                                                distance: leg.distance,
+                                                duration: leg.duration
+                                            });
+                                        }
+                                    });
+                                } else {
+                                    //error msg - directions failed
+                                    $('#errors').html('').append('<div class="errorMessage directionsError">Directions request failed, please check your inputs.</div>');
+                                }
+                            });
+                        }
+
+                    }
+                });
+            }
+        }
+        return false;
     },
 
-    currentLocation: function () {
+    allowedAddressTypes: [
+        'street_number',
+        'street_address',
+        'route',
+        'intersection',
+        'political',
+        'country',
+        'administrative_area_level_1',
+        'administrative_area_level_2',
+        'administrative_area_level_3',
+        'locality',
+        'sublocality',
+        'neighborhood',
+        'premise',
+        'subpremise',
+        'postal_code',
+        'colloquial_area'
+    ],
+    filterAddresses: function (results, region) {
+        //NT: special filtering rules applied to colloquial_area        
+        var _SELF = this;
+        var filtered_values = [];
+        if (results != null) {
+            //NT: if there is > 1 result then filter out colloquial_area (workaround suggested by Google)
+            if (results.length > 1) {
+                var newResults = [];
+                for (var i = 0; i < results.length; i++) {
+                    if ($.inArray('colloquial_area', results[i].types) == -1) {
+                        newResults.push(results[i]);
+                    }
+                }
+                results = newResults;
+            }
 
+            for (var i = 0; i < results.length; i++) {
+                var result = results[i];
+                var numComponents = result.address_components.length;
+                var types = result.types;
+                var found = false;
+                var addressAllowed = true;
+
+                //check if this is an allowed address
+                for (var l = 0; l < types.length; l++) {
+                    if ($.inArray(types[l], _SELF.allowedAddressTypes) == -1) {
+                        addressAllowed = false;
+                    }
+                }
+
+                if (addressAllowed) {
+                    for (var j = 0; j < numComponents && !found; j++) {
+                        var component = result.address_components[j];
+                        var types = component.types;
+                        for (var k = 0; k < types.length && !found; k++) {
+                            if (types[k] == 'country') {
+                                if (component.long_name == region) {
+                                    filtered_values.push(results[i]);
+                                    found = true;
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
+                //reset
+                addressAllowed = true;
+            }
+        }
+        return filtered_values;
     },
 
-    lastGeocodeResult: {},
-    geocode: function (address, sucessCallback, failCallback) {
+    geocode: function (address, waypointNumber, isDirections, resultsCallback) {
+        var _SELF = this;
+        if (!this.geocoder) { this.geocoder = new google.maps.Geocoder(); }
+        var request = {
+            address: address.replace("%25", ""),
+            region: "AU"
+        };
+        this.geocoder.geocode(request, function (results, status) {
+            if (status == 'OK') {
+                results = _SELF.filterAddresses(results, 'Australia');
+                _SELF.filteredGeocodeResults = results;
+                if (results.length == 1) {
+                    resultsCallback(results[0], waypointNumber);
+                } else {
+                    //error msg                    
+                    if (!isDirections) {
+                        //search form                        
+                        if (results.length > 1) {
+                            //multiple results - search                             
+                            $('#ddlMultipleAddresses').html('');
+                            $('#multipleAddressDialog').find($('#multipleAddressDialog').find('#ddlMultipleAddresses').html(''));
+                            $("<option/>").attr('value', '0').html('Choose an address:').appendTo($('#multipleAddressDialog').find('#ddlMultipleAddresses'));
+                            if (results.length > 0) {
+                                $.each(results, function (i, address) {
+                                    $("<option/>").html(this.formatted_address).appendTo($('#multipleAddressDialog').find('#ddlMultipleAddresses'));
+                                });
+                                _SELF.multipleAddressDialog = $.colorbox({ href: "#multipleAddressDialog", inline: true, transition: "none", width: "380px", overlayClose: false, escKey: false, onLoad: function () { $('#cboxClose').remove(); } });
+                            } else {
+                                //error msg - no results came back
+                                _SELF.displayException('No results found');
+                                $('#loadingOverlay').hide();
+                            }
+                        } else {
+                            //no results - search                            
+                            $('#searchInp').addClass('error');
+                            $('#searchInp').focus(function () {
+                                $('#searchInp').removeClass('error');
 
+                            });
+                            _SELF.displayException('No results found');
+                        }
+                    } else {
+                        //directions form error                        
+                        if (results.length == 0) {
+                            //error msg - no results came back
+                            var count = 0;
+                            $('#directionsFields .directionsitem input').each(function (key, value) {
+                                if (count == waypointNumber) {
+                                    $(this).parent().addClass('error');
+                                    $(this).addClass('error');
+                                    $(this).after('<div class="errorMessage directionsError" style="width: ' + $(this).width() + 'px;">No results found, please try a different input.</div>');
+                                    $(this).focus(function () {
+                                        $(this).val('');
+                                        $(this).removeClass('error');
+                                        $(this).parent().removeClass('error');
+                                        $(this).parent().find('.directionsError').remove();
+                                    });
+                                }
+                                count++;
+                            });
+                        }
+                        else {
+                            //error msg - multiple results
+                            var count = 0;
+                            $('#directionsFields .directionsitem input').each(function (key, value) {
+                                if (count == waypointNumber) {
+                                    $(this).parent().addClass('error');
+                                    $(this).addClass('error');
+                                    var htmlDDL = '<select class="multiResultSelect" id="multiResult' + waypointNumber + '"><option val="default">Select...</option>';
+                                    $(results).each(function (key, value) {
+                                        htmlDDL += '<option value="' + value.formatted_address + '">' + value.formatted_address + '</option>';
+                                    });
+                                    htmlDDL += '</select>';
+                                    $(this).after('<div style="width: ' + $(this).width() + 'px;" class="errorMessage directionsError">Multiple results found:<div>' + htmlDDL + '</div></div>');
+                                    $('#multiResult' + waypointNumber).change(function () {
+                                        $(this).parent().parent().parent().find('input').val($(this).val());
+                                        $(this).parent().parent().parent().find('input').removeClass('error');
+                                        $(this).parent().parent().parent().removeClass('error');
+                                        $(this).parent().parent().remove();
+                                    });
+                                }
+                                count++;
+                            });
+
+                        }
+                    }
+                }
+            }
+            else {
+                //error msg - no results came back
+                if (!isDirections) {
+                    $('#searchInp').addClass('error');
+                    $('#searchInp-clear').hide();
+                    $('#searchInp').focus(function () {
+                        $('#searchInp').val('');
+                        $('#searchInp').removeClass('error');
+                    });
+                    _SELF.displayException('No results found');
+                } else {
+                    var count = 0;
+                    $('#directionsFields .directionsitem input').each(function (key, value) {
+                        if (count == waypointNumber) {
+                            $(this).addClass('error');
+                            $(this).parent().addClass('error');
+                            $(this).after('<div class="errorMessage directionsError" style="width: ' + $(this).width() + 'px;">No results found, please try a different input.</div>');
+                            $(this).focus(function () {
+                                $(this).val('');
+                                $(this).removeClass('error');
+                                $(this).parent().removeClass('error');
+                                $(this).parent().find('.directionsError').remove();
+                            });
+                        }
+                        count++;
+                    });
+                }
+            }
+        });
     },
 
     infoBox: null,
@@ -186,6 +641,7 @@ var locator = {
         }
     },
 
+    autoCompleteOptions: {},
     initialize: function (config) {
         if (config) {
             $.extend(this, config);
@@ -196,8 +652,9 @@ var locator = {
             _SELF.initMap();
             _SELF.initEvents();
             _SELF.windowResize();
+            autoCompleteFunction.initAutoComplete('#search-input', _SELF.autoCompleteOptions);
             _SELF.loading(false);
-        }, 1000);
+        }, 500);
     }
 
 };

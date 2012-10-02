@@ -1,0 +1,54 @@
+.ac_results {     
+    border-style: none;
+    opacity: 0.8;
+    overflow: hidden;
+    padding: 0;    
+    z-index: 9999;    
+    top: 101px !important;
+    width: 100% !important;
+    padding-bottom: 50px;
+}
+
+.ac_results ul {
+	width: 100%;
+	list-style-position: outside;
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	background-color: #000;    
+}
+
+.ac_results li {    
+    border-top: 1px solid #404040;
+    color: #FFFFFF;
+    cursor: default;
+    display: block;
+    font-size: 12px;
+    line-height: 16px;
+    margin: 0;
+    overflow: hidden;
+    padding: 10px;
+    background: url("../img/chevron-right.png") no-repeat scroll right center transparent;
+}
+
+.ac_results li:first-child
+{
+    border-top: none;    
+}
+
+.ac_loading {
+	/* background: white url('../images/loading-circle-black.gif') right center no-repeat; */
+}
+
+.ac_odd 
+{
+}
+
+.ac_even
+{
+	
+}
+
+.ac_over {
+	background-color: #404040;
+}

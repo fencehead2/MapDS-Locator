@@ -68,6 +68,7 @@ tbody
     display: inline-block;
     float: right;
     list-style: none outside none;
+    width: 268px;
 }
 .header table tr td ul li a
 {
@@ -144,6 +145,16 @@ tbody
     border-radius: 14px; 
     z-index: 4px;
     background: #ffffff;
+}
+.main #search form .input-append input.current-location 
+{
+    color: #0169F8;          
+}
+.main #search form .input-append input.error, #directionsFields .directionsitem input.error 
+{
+    background-color: #F2DEDE;
+    border-color: #EED3D7;
+    color: #B94A48;   
 }
 .main #search form .input-append input:focus 
 {
@@ -316,13 +327,24 @@ tbody
 {
     text-align: right; 
 }
-.copywrite 
+#poweredby 
 {
-    color: #FFF;    
-    margin: 0;
-    text-transform: none;
+    color: #FFFFFF;    
 }
-
+#mdslink {
+    color: #FFFFFF;
+    font-weight: bold;
+    padding-bottom: 2px;
+    padding-top: 2px;
+    text-decoration: none;
+}
+#mdsLogo {
+    border: medium none;
+    height: 20px;
+    margin-left: 3px;
+    position: relative;
+    top: -2px;
+}
 
 /* LOADING
 ----------------------------------------------------------*/
@@ -334,7 +356,172 @@ tbody
 
 /* DIRECTIONS
 ----------------------------------------------------------*/
-.header table tr td ul.dropdown-menu 
+.header table tr td .dropdown-menu 
 {
-    padding: 10px;    
+    padding: 10px; 
+    width: 265px;   
+    background-image: url("http://subtlepatterns.com/patterns/furley_bg.png");
 }
+/*MDS*/
+
+#directionsFields
+{
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 1208px;
+}
+#directionsFields .directionsitem
+{
+    clear: both;
+    display: block;
+    height: 39px;
+    margin: 10px 0;
+    margin-left: auto;
+    margin-right: auto;
+}
+#directionsFields .directionsitem input
+{
+    background: #FFFFFF;
+    border-radius: 0 5px 5px 0;
+    border-color: #CCCCCC;
+    border-left: none;
+    float: left;
+    font-size: 13px;
+    height: 21px;
+    left: -3px;
+    margin-left: 1px;
+    padding: 5px 10px;
+    position: relative;
+    top: 1px;
+    width: 75%;
+}
+#directionsFields .directionsitem input.blur
+{
+    color: #CCCCCC;
+}
+#directionsFields .directionsitem .directionsLabel
+{
+    float: left;
+    margin-left: 1px; /*height: 38px;     width: 25px;     margin: 0 5px;     position: relative;     top: 2px;     margin-top: 4px;*/
+}
+.directionsItemIcn
+{
+    float: left;
+    position: relative;
+    top: 0;
+    height: 35px;
+}
+#directionsFields .directionsitem .removeDirectionField
+{
+    background: url("../img/clear.png") no-repeat scroll 0 0;
+    float: left;
+    height: 15px;
+    margin-left: 5px;
+    margin-right: 5px;
+    margin-top: 10px;
+    width: 15px;
+    cursor: pointer;
+    display: none;
+}
+#directionsControls
+{
+    text-align: center;
+    padding-bottom: 5px;
+}
+#directionsControls #addDestination, #directionsControls #hideShowDirOpt
+{
+    cursor: pointer;
+    display: inline-block;
+    font-size: 80%;
+    font-weight: bold;
+}
+#directionsControls #directionsOptions
+{
+    background: none repeat scroll 0 0 #000000;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFFFF;
+    height: 50px;
+    margin: 5px auto;
+    padding: 10px;
+    width: 180px;
+}
+#directionsControls #directionsOptions div
+{
+    display: block;
+    height: 27px;
+    margin-left: 25px;
+}
+#directionsControls #directionsOptions div input
+{
+    float: left;
+}
+#directionsControls #directionsOptions div label
+{
+    float: left;
+    font-size: 80%;
+    left: 2px;
+    position: relative;
+    top: 1px;
+}
+
+#tripBlurb p
+{
+    padding: 5px 0;
+    margin: 10px 5px 10px;
+    text-align: center;
+    font-size: 90%;
+}
+.hidden
+{
+    display: none;
+}
+
+#searchToolbar.directions
+{
+    margin: 5px 5px 0;
+}
+/*
+#searchBtnDir
+{
+    background: url("images/button-grad.png") repeat-x scroll 0 0 transparent;
+    border: 1px solid #174A12;
+    border-radius: 5px 5px 5px 5px;
+    color: #FFFF00;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: bold;
+    margin-top: 5px;
+    padding: 5px 13px;
+    text-decoration: none;
+    text-shadow: 0 1px 2px #174A12;
+    width: 100%;
+}*/
+.errorMessage
+{
+    padding: 5px;
+    margin: 5px;
+    background: #FFA3A3;
+    color: #000000;
+    border: solid 1px #B70201;
+}
+.directionsError
+{
+    border-radius: 5px 5px 5px 5px;
+    float: left;
+    font-size: 12px;
+    margin: 5px 5px 5px 33px;
+    padding: 5px 10px;
+    width: 100%;
+}
+
+.multiResultSelect
+{
+    width: 100%;
+    margin-top: 5px;
+    border: 1px solid #CCCCCC;
+    color: #444444;
+    font-size: 1.2em;
+    padding: 2px;
+}
+
+/*MDS*/
