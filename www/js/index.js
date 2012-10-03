@@ -77,7 +77,7 @@ var locator = {
         var pixelOffsety = -92;
         if (isCurrentLocation == true) {
             pixelOffsetx = -50;
-            pixelOffsety = -73;
+            pixelOffsety = -74;
         }
 
         if (!isCurrentLocation && displayname.length >= 16) {
@@ -101,7 +101,7 @@ var locator = {
                     pixelOffset: new google.maps.Size(pixelOffsetx, pixelOffsety),
                     zIndex: null,
                     boxStyle: {
-                        background: "url('../www/img/infowindow/tipbox.png') no-repeat scroll -67pt 32pt transparent",
+                        background: "url('../www/img/infowindow/tipbox.png') no-repeat scroll -67pt 31pt transparent",
                         opacity: 1,
                         width: popupWidth
                     },
@@ -159,6 +159,7 @@ var locator = {
 
     find: function (address) {
         var _SELF = this;
+        if (_SELF.clickInfoBox != null) { _SELF.clickInfoBox.close(); }
         if (address != '' && address != null && address != 'Enter Suburb / Postcode...') {
             (_SELF.directionsDisplay ? _SELF.directionsDisplay.setMap(null) : '');
             $('#results-btn').trigger('click');
@@ -401,12 +402,14 @@ var locator = {
             waypointCount++;
         });
     },
+
     wayPoints: [],
     directionsWaypointCount: 2,
     directionsWaypointId: 1,
     directionsDisplay: null,
     getDirections: function () {
         var _SELF = this;
+        if (_SELF.clickInfoBox != null) { _SELF.clickInfoBox.close(); }
         //remove all pervious errors
         _SELF.wayPoints = [];
         $('#directionsFields .directionsitem').find('.directionsError').remove();
