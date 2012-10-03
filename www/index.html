@@ -12,12 +12,12 @@
         <title>MapDS Locator</title>
     </head>
     <body>
-        <div id="loading"></div>        
+        <div id="loading"></div>
         <div id="home">            
             <div class="header">
                 <table>
                     <tr>
-                        <td class="left">                            
+                        <td class="left">
                             <div style="margin: 0;" class="btn-toolbar">
                               <div class="btn-group">
                                 <button data-toggle="dropdown" class="btn dropdown-toggle"><i class="icon-road"></i> <span class="caret"></span></button>
@@ -48,8 +48,7 @@
                                                 </div>
                                             </div>
                                             <div id="searchToolbar" class="directions">
-                                                <div id="searchBtnContainer">
-                                                    <!--<input id="searchBtnDir" value="Show Route" title="Show Route" type="submit">-->
+                                                <div id="searchBtnContainer">                                                    
                                                     <button class="btn btn-primary btn-block" id="searchBtnDir">Show Route</button>
                                                 </div>
                                             </div>
@@ -60,11 +59,14 @@
                             </div>                            
                         </td>
                         <td class="middle">
-                            <a class="heading" href="#">Locator</a>
+                            <a class="heading" href="#">                            
+                                <!--Locator-->
+                                <img id="mdsLogo" src="../www/img/mdslogo.png" alt="MapData Services" />
+                            </a>                            
                         </td>
                         <td class="right">
                             <div class="btn-group">
-                                <button id="map-btn" class="btn"><i class="icon-map-marker"></i></button>
+                                <button id="map-btn" class="btn active"><i class="icon-map-marker"></i></button>
                                 <button id="list-btn" class="btn"><i class="icon-list"></i></button>
                             </div>
                         </td>
@@ -81,133 +83,136 @@
                             </button>
                         </div>
                     </form>                                    
-                </div>
-                <div id="searchResults">
-                    <ul><li class="ac_even ac_over"><strong>1 York St</strong>, Launceston TAS 7250, Australia</li><li class="ac_odd"><strong>1 York St</strong>, Point Frederick NSW 2250, Australia</li><li class="ac_even"><strong>1 York St</strong>, Sydney NSW 2000, Australia</li><li class="ac_odd"><strong>1 York St</strong>, Inglewood WA 6052, Australia</li><li class="ac_even"><strong>1 York St</strong>, Tahmoor NSW 2573, Australia</li><li class="ac_odd"><strong>1 York St</strong>, Beaconsfield WA 6162, Australia</li><li class="ac_even"><strong>1 York St</strong>, Teralba NSW 2284, Australia</li><li class="ac_odd"><strong>1 York St</strong>, Singleton NSW 2330, Australia</li><li class="ac_even"><strong>1 York St</strong>, Nundah QLD 4012, Australia</li><li class="ac_odd"><strong>1 York St</strong>, Sandy Bay TAS 7005, Australia</li></ul>
-                </div>
+                </div>                
                 <div id="list">
-                    <ul>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                        <li>
-                            <div class="list-item">
-                                <div class="list-item-icon">
-                                    <i class="icon-map-marker"></i>
-                                </div>                                
-                                <div class="list-item-address">
-                                    <h4>Heading</h4>
-                                    <p>1 York St, Sydney NSW 2000</p>                                    
-                                </div>
-                                <p class="distance">0.9km</p>
-                            </div>                                                        
-                        </li>
-                    </ul>
+                    <div id="directions">
+                        
+                    </div>
+                    <div id="results">
+                        <ul>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                            <li>
+                                <div class="list-item">
+                                    <div class="list-item-icon">
+                                        <i class="icon-map-marker"></i>
+                                    </div>                                
+                                    <div class="list-item-address">
+                                        <h4>Heading</h4>
+                                        <p>1 York St, Sydney NSW 2000</p>                                    
+                                    </div>
+                                    <p class="distance">0.9km</p>
+                                </div>                                                        
+                            </li>
+                        </ul>
+                    </div>
+                    
                 </div>
                 <div id="map"></div>
             </div>
@@ -217,11 +222,11 @@
                         <td class="left">
                             <button id="current-location" class="btn"><i class="icon-screenshot"></i></button>
                         </td>
-                        <td class="middle">                                                                                              
-                            <span id="poweredby">Powered by</span>
-                            <a target="_blank" href="http://mapdataservices.com" id="mdslink">
-                                MapData Services<img id="mdsLogo" src="../www/img/mdslogo.png" alt="" />
-                            </a>
+                        <td class="middle">
+                            <div id="directions-toggle" class="btn-group">
+                                <button id="results-btn" class="btn">Results</button>
+                                <button id="directions-btn" class="btn">Directions</button>
+                            </div>
                         </td>
                         <td class="right">                        
                             <button class="btn"><i class="icon-filter"></i></button>
