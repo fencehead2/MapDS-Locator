@@ -1,22 +1,18 @@
 ﻿<!DOCTYPE html>
 <html>
     <head>
+        <meta name="format-detection" content="telephone=no" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="black" />
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <meta name="format-detection" content="telephone=no" />
-        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />
-        <!--<link rel="stylesheet" type="text/css" href="css/bootstrap-responsive.css" />-->
+        <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height, target-densitydpi=device-dpi" />        
         <link rel="stylesheet" type="text/css" href="css/bootstrap.css" />
-        <link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css" />        
+        <link rel="stylesheet" type="text/css" href="css/jquery.autocomplete.css" />
         <link rel="stylesheet" type="text/css" href="css/index.css" />        
         <title>MapDS Locator</title>
     </head>
     <body>
-                   
-        <div id="loading"></div>
-         
-        <!-- Home Page -->     
+        <div id="loading"></div>        
         <div id="home">            
             <div class="header">
                 <table>
@@ -25,58 +21,43 @@
                             <div style="margin: 0;" class="btn-toolbar">
                               <div class="btn-group">
                                 <button data-toggle="dropdown" class="btn dropdown-toggle"><i class="icon-road"></i> <span class="caret"></span></button>
-                                <div class="dropdown-menu">
-                                    
-                                        <!--<div>A</div>
-                                        <input type="text" /><br />
-                                        <div>B</div>
-                                        <input type="text" /><br />                                                                                                                      
-                                        <button class="btn btn-block btn-primary">
-                                            Get Directions
-                                        </button>-->
-
-                                        <form id="directions-search">
-                                            <div id="directionsFields">
-                                                <div class="directionsitem">
-                                                    <div style="background-repeat: no-repeat;" class="directionsLabel" id="startdirections"><img class="directionsItemIcn" src="../www/img/markers/waypointIcon1.png" alt=""></div>
-                                                    <input style="width: 75%;" id="start" name="waypointInput00" class="blur" value="Enter Suburb / Postcode" type="text">                  
-                                                    <div style="right: 18px;" id="start-clear" class="clear-input clear-input-dir"></div>
-                                                    <div style="display: none;" class="removeDirectionField" title="Remove this destination"></div>
-                                                </div>
-                                                <div class="directionsitem">
-                                                    <div style="background-repeat: no-repeat;" class="directionsLabel" id="directionsLabel1"><img class="directionsItemIcn" src="../www/img/markers/waypointIcon2.png" alt=""></div>
-                                                    <input style="width: 75%;" id="end" name="waypointInput01" class="blur" value="Enter Suburb / Postcode" type="text">                
-                                                    <div style="right: 18px;" id="end-clear" class="clear-input clear-input-dir"></div>
-                                                    <div style="display: none;" class="removeDirectionField" title="Remove this destination"></div>
-                                                </div>
+                                <div class="dropdown-menu">                                                                            
+                                    <form id="directions-search">
+                                        <div id="directionsFields">
+                                            <div class="directionsitem">
+                                                <div style="background-repeat: no-repeat;" class="directionsLabel" id="startdirections"><img class="directionsItemIcn" src="../www/img/markers/waypointIcon1.png" alt=""></div>
+                                                <input style="width: 75%;" id="start" name="waypointInput00" class="blur" value="Enter Suburb / Postcode" type="text">                  
+                                                <div style="right: 18px;" id="start-clear" class="clear-input clear-input-dir"></div>
+                                                <div style="display: none;" class="removeDirectionField" title="Remove this destination"></div>
                                             </div>
+                                            <div class="directionsitem">
+                                                <div style="background-repeat: no-repeat;" class="directionsLabel" id="directionsLabel1"><img class="directionsItemIcn" src="../www/img/markers/waypointIcon2.png" alt=""></div>
+                                                <input style="width: 75%;" id="end" name="waypointInput01" class="blur" value="Enter Suburb / Postcode" type="text">                
+                                                <div style="right: 18px;" id="end-clear" class="clear-input clear-input-dir"></div>
+                                                <div style="display: none;" class="removeDirectionField" title="Remove this destination"></div>
+                                            </div>
+                                        </div>
                                                                                 
-                                            <div id="directionsControlsContainer">                                        
-                                                <div class="directions" id="directionsControls">
-                                                    <div style="" id="addDestination">Add Destination</div><span style="display: inline;" id="controlSeperator"> - </span>
-                                                    <div id="hideShowDirOpt">Show Options</div>
-                                                    <div class="hidden" id="directionsOptions">
-                                                        <div><input value="avoidhighways" name="avoidhighways" id="avoidhighways" type="checkbox"> <label for="avoidhighways">Avoid highways</label></div>
-                                                        <div><input value="avoidtolls" name="avoidtolls" id="avoidtolls" type="checkbox"> <label for="avoidtolls">Avoid tolls</label></div>
-                                                    </div>
-                                                </div>
-                                                <div id="searchToolbar" class="directions">
-                                                    <div id="searchBtnContainer">
-                                                        <!--<input id="searchBtnDir" value="Show Route" title="Show Route" type="submit">-->
-                                                        <button class="btn btn-primary btn-block" id="searchBtnDir">Show Route</button>
-                                                    </div>
+                                        <div id="directionsControlsContainer">                                        
+                                            <div class="directions" id="directionsControls">
+                                                <div style="" id="addDestination">Add Destination</div><span style="display: inline;" id="controlSeperator"> - </span>
+                                                <div id="hideShowDirOpt">Show Options</div>
+                                                <div class="hidden" id="directionsOptions">
+                                                    <div><input value="avoidhighways" name="avoidhighways" id="avoidhighways" type="checkbox"> <label for="avoidhighways">Avoid highways</label></div>
+                                                    <div><input value="avoidtolls" name="avoidtolls" id="avoidtolls" type="checkbox"> <label for="avoidtolls">Avoid tolls</label></div>
                                                 </div>
                                             </div>
-                                        </form>
-                                        
-                                        
-                                        
-                                        <!--<div id="directionsListHeading">Route Sumary -</div>            
-                                        <table id="directionsList"></table>-->                                            
+                                            <div id="searchToolbar" class="directions">
+                                                <div id="searchBtnContainer">
+                                                    <!--<input id="searchBtnDir" value="Show Route" title="Show Route" type="submit">-->
+                                                    <button class="btn btn-primary btn-block" id="searchBtnDir">Show Route</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </form>                                                                                                                                                  
                                 </div>
-                              </div><!-- /btn-group -->              
-                            </div>
-                            
+                              </div>
+                            </div>                            
                         </td>
                         <td class="middle">
                             <a class="heading" href="#">Locator</a>
@@ -239,7 +220,7 @@
                         <td class="middle">                                                                                              
                             <span id="poweredby">Powered by</span>
                             <a target="_blank" href="http://mapdataservices.com" id="mdslink">
-                                MapData Services<img id="mdsLogo" src="../www/img/mdslogo.png" alt="">
+                                MapData Services<img id="mdsLogo" src="../www/img/mdslogo.png" alt="" />
                             </a>
                         </td>
                         <td class="right">                        
@@ -251,17 +232,13 @@
         </div>
         
         <!--<script type="text/javascript" src="js/cordova-2.0.0.js"></script>-->
-        <!--<script type="text/javascript" src="js/jquery.js"></script>   -->             
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-        <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.min.js"></script>     
-
-        <script type="text/javascript" src="js/mustache.js"></script>        
+        <script type="text/javascript" src="js/jquery.min.js"></script>
+        <script type="text/javascript" src="js/jquery-ui.min.js"></script>
         <script type="text/javascript" src="js/spinners.js"></script>
-        <!--<script type="text/javascript" src="js/excanvas.js"></script>-->
         <script src="http://maps.google.com/maps/api/js?v=3.6&libraries=geometry&sensor=false" type="text/javascript"></script>
         <script type="text/javascript" src="js/gmaps.infobox.js"></script>
         <script type="text/javascript" src="js/jquery.autocomplete.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>                
+        <script type="text/javascript" src="js/index.js"></script>
 
     </body>
 </html>
