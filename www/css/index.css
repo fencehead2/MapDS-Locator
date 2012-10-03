@@ -553,4 +553,48 @@ tbody
     padding: 2px;
 }
 
-/*MDS*/
+/*InfoBox Map PopUp
+----------------------------------------*/
+.infoBox div
+{
+    background: url("../img/infowindow/popupgrad.png") repeat scroll center center transparent;
+    border-color: #6F6F6F #2B2B2B #2B2B2B;
+    border-radius: 7px 7px 7px 7px;
+    border-right: 1px solid #2B2B2B;
+    border-style: solid;
+    border-width: 1px;
+    color: #FFFFFF;
+    font-size: 13.5px;
+    margin-bottom: 8px;
+    padding: 5px;
+    border-top: 1px solid #6F6F6F;
+}
+.infoBox div a
+{
+    color: #ffffff;
+    text-decoration: none;
+    text-shadow: 0 1px 2px #000000;
+}
+.infoBox div .popuplogo img
+{    
+    float: left;
+    width: 30px;
+    padding-right: 1px;
+    position: relative;
+    top: -2px;
+}
+.markerlink
+{
+    padding: 5px 25px 5px 0;
+    background: url(../img/infowindow/map-right-arrow.png) no-repeat scroll right center;
+    display: block;
+}
+.markerlinkcl
+{
+    padding: 5px;
+    display: block;
+}
+.markerlink:active
+{
+    background: url("../img/infowindow/map-right-arrow-act.png") no-repeat scroll right center transparent;
+}

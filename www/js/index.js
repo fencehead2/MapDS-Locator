@@ -66,7 +66,57 @@ var locator = {
         }
     },
 
-    searchedLocationMarker: null,
+    clickInfoBox: null,
+    initMarkerEvents: function (marker, id, displayname, Latitude, Longitude, isCurrentLocation, isCluster) {
+        var _SELF = this;
+        var popupLink = !isCurrentLocation && !isCluster ? '#' : '#';
+        var popupClass = !isCurrentLocation && !isCluster ? 'markerlink' : 'markerlinkcl';
+        var popupWidth = !isCurrentLocation && !isCluster ? '175px' : '130px';
+
+        var pixelOffsetx = -58;
+        var pixelOffsety = -92;
+        if (isCurrentLocation == true) {
+            pixelOffsetx = -50;
+            pixelOffsety = -73;
+        }
+
+        if (!isCurrentLocation && displayname.length >= 16) {
+            displayname = displayname.substring(0, 16) + '...';
+        }
+
+        google.maps.event.addListener(marker, 'click', function () {
+            //go to the detail page for the marker, uses the global ft variable
+            marker.setZIndex(999);
+            if (isCluster) {
+                _SELF.Map.setCenter(marker.getPosition());
+                _SELF.Map.setZoom(_SELF.Map.getZoom() + 1);
+            } else {
+                if (_SELF.clickInfoBox != null) { _SELF.clickInfoBox.close(); }
+                var boxText = document.createElement("div");
+                boxText.innerHTML = '<span class="popuplogo"><a class="' + popupClass + '" href="#" onclick="document.location.href=\'' + popupLink + '\'; return false;">' + displayname + '</a></span>';
+                _SELF.clickInfoBox = new InfoBox({
+                    content: boxText,
+                    disableAutoPan: false,
+                    maxWidth: 0,
+                    pixelOffset: new google.maps.Size(pixelOffsetx, pixelOffsety),
+                    zIndex: null,
+                    boxStyle: {
+                        background: "url('../www/img/infowindow/tipbox.png') no-repeat scroll -67pt 32pt transparent",
+                        opacity: 1,
+                        width: popupWidth
+                    },
+                    closeBoxMargin: "11px 3px 3px 3px",
+                    closeBoxURL: "",
+                    infoBoxClearance: new google.maps.Size(1, 1),
+                    isHidden: false,
+                    pane: "floatPane",
+                    enableEventPropagation: false
+                });
+                _SELF.clickInfoBox.open(_SELF.map, marker);
+            }
+        });
+    },
+
     searchedLocationMarkerSettings: {
         img: '../www/img/searched-location.png',
         height: 40,
@@ -79,12 +129,12 @@ var locator = {
         width: 25
     },
     createSearchedLocaitonMarker: function (lat, lng, searchedlocation, isCurrentLocation) {
+
+        console.log(isCurrentLocation);
+
         //remove existing markers
         if (this.currentLocationMarker != null) {
             this.currentLocationMarker.setMap(null);
-        }
-        if (this.searchedLocationMarker != null) {
-            this.searchedLocationMarker.setMap(null);
         }
         //set marker settings
         var settings = {};
@@ -104,12 +154,16 @@ var locator = {
             };
         }
         this.currentLocationMarker = new google.maps.Marker(settings);
+        this.initMarkerEvents(this.currentLocationMarker, '', searchedlocation, lat, lng, isCurrentLocation, false);
     },
 
     find: function (address) {
         var _SELF = this;
         if (address != '' && address != null && address != 'Enter Suburb / Postcode...') {
             (_SELF.directionsDisplay ? _SELF.directionsDisplay.setMap(null) : '');
+            $('#results-btn').trigger('click');
+            $('#directions-toggle').removeClass('active');
+            $('#directions-toggle').hide();
             if (address.toLowerCase() == 'current location') {
                 $('#current-location').trigger('click');
                 return null;
@@ -121,7 +175,6 @@ var locator = {
                 _SELF.map.setZoom(14);
                 _SELF.createSearchedLocaitonMarker(location.geometry.location.lat(), location.geometry.location.lng(), _SELF.geocodeResult.formatted_address, false);
                 $('#search-input').blur();
-
             });
         } else {
             //error msg - input missing
@@ -247,7 +300,7 @@ var locator = {
             $('#directions').hide();
             $('#results').show();
             window.scrollTo(0, 0.5);
-            google.maps.event.trigger(_SELF.map, "resize");            
+            google.maps.event.trigger(_SELF.map, "resize");
         });
         $('#directions-btn').click(function () {
             $('#results-btn').removeClass('active');
@@ -255,7 +308,7 @@ var locator = {
             $('#results').hide();
             $('#directions').show();
             window.scrollTo(0, 0.5);
-            google.maps.event.trigger(_SELF.map, "resize");            
+            google.maps.event.trigger(_SELF.map, "resize");
         });
         $('#map-btn').click(function () {
             $('#list-btn').removeClass('active');
@@ -431,7 +484,6 @@ var locator = {
                                 if (status == google.maps.DirectionsStatus.OK) {
 
                                     _SELF.currentLocationMarker ? _SELF.currentLocationMarker.setMap(null) : '';
-                                    _SELF.searchedLocationMarker ? _SELF.searchedLocationMarker.setMap(null) : '';
 
                                     $('.dropdown-menu').hide();
                                     _SELF.directionsLegsDistance = [];
@@ -457,9 +509,9 @@ var locator = {
                                         }
                                     });
                                     $('#results').hide();
-                                    $('#directions').show();                                    
+                                    $('#directions').show();
                                     $('#directions-toggle').addClass('active');
-                                    $('#directions-btn').addClass('active');
+                                    $('#directions-btn').trigger('click');
                                 } else {
                                     //error msg - directions failed
                                     $('#errors').html('').append('<div class="errorMessage directionsError">Directions request failed, please check your inputs.</div>');
@@ -686,6 +738,10 @@ var locator = {
                 mapTypeId: google.maps.MapTypeId.ROADMAP
             };
             this.map = new google.maps.Map(document.getElementById(selector), options);
+            var _SELF = this;
+            google.maps.event.addListener(_SELF.map, 'click', function () {
+                if (_SELF.clickInfoBox != null) { _SELF.clickInfoBox.close(); }
+            });
         } else {
             return null;
         }
