@@ -356,6 +356,7 @@ tbody
 {
     display: none;
     position: absolute;    
+    z-index: 999;
 }
 
 /* DIRECTIONS
@@ -372,6 +373,10 @@ tbody
 .adp-list
 {        
     border: none;
+}
+.adp-text 
+{
+    padding-left: 30px;    
 }
 #directions table tr {}
 #directions table tr td {}

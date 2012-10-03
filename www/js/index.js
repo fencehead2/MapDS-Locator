@@ -129,9 +129,6 @@ var locator = {
         width: 25
     },
     createSearchedLocaitonMarker: function (lat, lng, searchedlocation, isCurrentLocation) {
-
-        console.log(isCurrentLocation);
-
         //remove existing markers
         if (this.currentLocationMarker != null) {
             this.currentLocationMarker.setMap(null);
@@ -515,6 +512,7 @@ var locator = {
                                     $('#directions').show();
                                     $('#directions-toggle').addClass('active');
                                     $('#directions-btn').trigger('click');
+                                    _SELF.loading(false);
                                 } else {
                                     //error msg - directions failed
                                     $('#errors').html('').append('<div class="errorMessage directionsError">Directions request failed, please check your inputs.</div>');
@@ -745,6 +743,16 @@ var locator = {
             google.maps.event.addListener(_SELF.map, 'click', function () {
                 if (_SELF.clickInfoBox != null) { _SELF.clickInfoBox.close(); }
             });
+
+            google.maps.event.addListener(_SELF.map, 'zoom_changed', function () { _SELF.loading(true); });
+            google.maps.event.addListener(_SELF.map, 'dragstart', function () { _SELF.loading(true); });
+            google.maps.event.addListener(_SELF.map, 'tilesloaded', function () { _SELF.loading(false); });
+            google.maps.event.addListener(_SELF.map, 'idle', function () {
+                setTimeout(function () {
+                    _SELF.loading(false);
+                }, 200);
+            });
+
         } else {
             return null;
         }
@@ -762,7 +770,7 @@ var locator = {
             _SELF.initEvents();
             _SELF.windowResize();
             autoCompleteFunction.initAutoComplete('#search-input', _SELF.autoCompleteOptions);
-            _SELF.loading(false);
+            //_SELF.loading(false);
             $('#current-location').trigger('click');
         }, 500);
     }
