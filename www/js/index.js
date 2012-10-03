@@ -70,7 +70,7 @@ var locator = {
     initMarkerEvents: function (marker, id, displayname, Latitude, Longitude, isCurrentLocation, isCluster) {
         var _SELF = this;
         var popupLink = !isCurrentLocation && !isCluster ? '#' : '#';
-        var popupClass = !isCurrentLocation && !isCluster ? 'markerlink' : 'markerlinkcl';
+        var popupClass = !isCurrentLocation && !isCluster && id != 'Searched Location' ? 'markerlink' : 'markerlinkcl';
         var popupWidth = !isCurrentLocation && !isCluster ? '175px' : '130px';
 
         var pixelOffsetx = -58;
@@ -154,7 +154,7 @@ var locator = {
             };
         }
         this.currentLocationMarker = new google.maps.Marker(settings);
-        this.initMarkerEvents(this.currentLocationMarker, '', searchedlocation, lat, lng, isCurrentLocation, false);
+        this.initMarkerEvents(this.currentLocationMarker, 'Searched Location', searchedlocation, lat, lng, isCurrentLocation, false);
     },
 
     find: function (address) {
