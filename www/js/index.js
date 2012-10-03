@@ -220,6 +220,7 @@ var locator = {
         var _SELF = this;
         _SELF.initInputEvents();
         $('#searchBtnDir').click(function () {
+            $('#map-btn').trigger('click');
             _SELF.getDirections();
         });
         $(window).resize(function () {
@@ -242,6 +243,8 @@ var locator = {
             return false;
         });
         $('#directions-search').submit(function () {
+            $('#map-btn').trigger('click');
+            $('#search-input').removeClass('current-location');
             $('#search-input').val('');
             $('#search-input').blur();
             $('.directionsitem input').blur();
@@ -270,6 +273,9 @@ var locator = {
                 function (position) {
                     if (_SELF.map && google) {
                         (_SELF.directionsDisplay ? _SELF.directionsDisplay.setMap(null) : '');
+                        $('#results-btn').trigger('click');
+                        $('#directions-toggle').removeClass('active');
+                        $('#directions-toggle').hide();
                         _SELF.createSearchedLocaitonMarker(position.coords.latitude, position.coords.longitude, 'Current Location', true)
                         _SELF.map.setCenter(new google.maps.LatLng(
                             position.coords.latitude,
@@ -516,6 +522,7 @@ var locator = {
                                 } else {
                                     //error msg - directions failed
                                     $('#errors').html('').append('<div class="errorMessage directionsError">Directions request failed, please check your inputs.</div>');
+                                    _SELF.loading(false);
                                 }
                             });
                         }
