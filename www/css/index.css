@@ -416,12 +416,16 @@ tbody
     background: url("../img/clear.png") no-repeat scroll 0 0;
     float: left;
     height: 15px;
-    margin-left: 5px;
+    margin-left: 10px;
     margin-right: 5px;
     margin-top: 10px;
     width: 15px;
     cursor: pointer;
     display: none;
+}
+#directionsControlsContainer 
+{
+    clear: both;    
 }
 #directionsControls
 {

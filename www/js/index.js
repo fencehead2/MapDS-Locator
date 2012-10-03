@@ -121,7 +121,7 @@ var locator = {
                 _SELF.map.setZoom(14);
                 _SELF.createSearchedLocaitonMarker(location.geometry.location.lat(), location.geometry.location.lng(), _SELF.geocodeResult.formatted_address, false);
                 $('#search-input').blur();
-                //window.scrollTo(0, 0.5);
+                window.scrollTo(0, 0.5);
             });
         } else {
             //error msg - input missing
@@ -168,11 +168,17 @@ var locator = {
     initEvents: function () {
         var _SELF = this;
         _SELF.initInputEvents();
+
         $('#searchBtnDir').click(function () {
             _SELF.getDirections();
         });
         $(window).resize(function () {
             _SELF.windowResize();
+        });
+        $('#search-input').focus(function () {
+            if ($(this).val() == 'Current Location...' || $(this).val() == '') {
+                $(this).val('');
+            }
         });
         $('#search-input').bind('keypress', function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
@@ -217,9 +223,9 @@ var locator = {
                         $('#current-location').html('<i class="icon-screenshot"></i>');
                         $('#search-input').val('Current Location...');
                         $('#search-input').addClass('current-location');
-                        $('#search-input').focus(function () {
+                        $('#search-input').focus(function () {                            
                             $('#search-input').removeClass('current-location');
-                            $('#search-input').val('');
+                            $('#search-input').val('');                                                        
                         });
                     }
                 },

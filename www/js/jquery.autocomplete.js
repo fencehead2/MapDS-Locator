@@ -177,8 +177,9 @@ var autoCompleteFunction = {
         var cache = $.Autocompleter.Cache(options);
         var hasFocus = 0;
         var lastKeyPressCode;
+        //changed this value to true to stop the results from being removed
         var config = {
-            mouseDownOnSelect: false
+            mouseDownOnSelect: true            
         };
         var select = $.Autocompleter.Select(options, input, selectCurrent, config);
         var blockSubmit;
@@ -252,7 +253,7 @@ var autoCompleteFunction = {
             // track whether the field has focus, we shouldn't process any
             // results if the field no longer has focus
             hasFocus++;
-        }).blur(function () {
+        }).blur(function () {            
             hasFocus = 0;
             if (!config.mouseDownOnSelect) {
                 hideResults();
@@ -332,6 +333,7 @@ var autoCompleteFunction = {
             $input.trigger("result", [selected.data, selected.value]);                        
             $('#search-input-btn').trigger('click');
             $('#search-input-btn').blur();
+            window.scrollTo(0, 0.5);
             return true;
         }
         function onChange(crap, skipPrevCheck) {
