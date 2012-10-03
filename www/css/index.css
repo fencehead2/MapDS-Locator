@@ -12,11 +12,11 @@ body {
     width:100%;
     background-attachment: scroll;
     background-clip: border-box;
-    background-color: #FFFFFF;
-    background-image: url("http://subtlepatterns.com/patterns/furley_bg.png");
+    background-color: #FFFFFF;    
+    background-image: url("../img/noisy_grid.png");
     background-origin: padding-box;
     background-position: center center;
-    background-repeat: repeat;
+    background-repeat: repeat; 
 }
 table 
 {
@@ -97,8 +97,12 @@ tbody
 {
     color: #FFFFFF;
     font-weight: bold; 
-    text-shadow: 0 1px 2px #000;   
-    text-transform: uppercase;    
+    text-shadow: 0 1px 2px #000;    
+}
+.heading:hover 
+{
+    color: #FFFFFF;
+    text-decoration: none;    
 }
 
 /* MAIN
@@ -264,7 +268,7 @@ tbody
     width: 100%;
     /*default for iphone 4*/
     height: 350px;
-    background-image: url("http://subtlepatterns.com/patterns/furley_bg.png");
+    background-image: url("../img/noisy_grid.png");
 }
 
 /* FOOTER
@@ -340,8 +344,8 @@ tbody
 }
 #mdsLogo {
     border: medium none;
-    height: 20px;
-    margin-left: 3px;
+    height: 35px;
+    margin-left: -5px;
     position: relative;
     top: -2px;
 }
@@ -356,11 +360,32 @@ tbody
 
 /* DIRECTIONS
 ----------------------------------------------------------*/
+#directions 
+{
+    background: #FFF;    
+}
+#directions table 
+{
+    border: medium none;
+    width: 100%;    
+}
+.adp-list
+{        
+    border: none;
+}
+#directions table tr {}
+#directions table tr td {}
+
+
+#directions-toggle 
+{
+    display: none;    
+}
 .header table tr td .dropdown-menu 
 {
     padding: 10px; 
     width: 265px;   
-    background-image: url("http://subtlepatterns.com/patterns/furley_bg.png");
+    background-image: url("../img/fabric_plaid.png");
 }
 /*MDS*/
 

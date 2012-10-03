@@ -168,7 +168,6 @@ var locator = {
     initEvents: function () {
         var _SELF = this;
         _SELF.initInputEvents();
-
         $('#searchBtnDir').click(function () {
             _SELF.getDirections();
         });
@@ -241,17 +240,44 @@ var locator = {
                 { enableHighAccuracy: true, maximumAge: 0 }
             );
         });
+
+        $('#results-btn').click(function () {
+            $('#directions-btn').removeClass('active');
+            $('#results-btn').addClass('active');
+            $('#directions').hide();
+            $('#results').show();
+            window.scrollTo(0, 0.5);
+            google.maps.event.trigger(_SELF.map, "resize");            
+        });
+        $('#directions-btn').click(function () {
+            $('#results-btn').removeClass('active');
+            $('#directions-btn').addClass('active');
+            $('#results').hide();
+            $('#directions').show();
+            window.scrollTo(0, 0.5);
+            google.maps.event.trigger(_SELF.map, "resize");            
+        });
         $('#map-btn').click(function () {
+            $('#list-btn').removeClass('active');
+            $('#map-btn').addClass('active');
             $('#searchResults').hide();
             $('#list').hide();
             $('#map').show();
+            $('#directions-toggle').hide();
             window.scrollTo(0, 0.5);
+            google.maps.event.trigger(_SELF.map, "resize");
         });
         $('#list-btn').click(function () {
+            $('#map-btn').removeClass('active');
+            $('#list-btn').addClass('active');
             $('#searchResults').hide();
             $('#map').hide();
             $('#list').show();
+            if ($('#directions-toggle').hasClass('active')) {
+                $('#directions-toggle').show();
+            }
             window.scrollTo(0, 0.5);
+            google.maps.event.trigger(_SELF.map, "resize");
         });
 
         $('#addDestination').click(function () {
@@ -365,7 +391,7 @@ var locator = {
                     if (waypointNumber == _SELF.wayPoints.length - 1 && $('#directionsFields .directionsitem').find('.directionsError').length == 0) {
                         var request = {
                             travelMode: google.maps.DirectionsTravelMode.DRIVING,
-                            provideRouteAlternatives: false
+                            provideRouteAlternatives: true
                         };
                         var waypointsForRequest = [];
                         var waypointCount = 0;
@@ -395,7 +421,10 @@ var locator = {
                         if (errors == 0) {
                             //perform directions request and display result
                             _SELF.directionsService = (_SELF.directionsService ? _SELF.directionsService : new google.maps.DirectionsService());
-                            _SELF.directionsDisplay = (_SELF.directionsDisplay ? _SELF.directionsDisplay : new google.maps.DirectionsRenderer({ draggable: false }));
+                            _SELF.directionsDisplay = (_SELF.directionsDisplay ? _SELF.directionsDisplay : new google.maps.DirectionsRenderer({
+                                draggable: false
+                            }));
+                            _SELF.directionsDisplay.setPanel(document.getElementById('directions'));
                             _SELF.directionsDisplay.setMap(_SELF.map);
 
                             _SELF.directionsService.route(request, function (response, status) {
@@ -427,6 +456,10 @@ var locator = {
                                             });
                                         }
                                     });
+                                    $('#results').hide();
+                                    $('#directions').show();                                    
+                                    $('#directions-toggle').addClass('active');
+                                    $('#directions-btn').addClass('active');
                                 } else {
                                     //error msg - directions failed
                                     $('#errors').html('').append('<div class="errorMessage directionsError">Directions request failed, please check your inputs.</div>');
