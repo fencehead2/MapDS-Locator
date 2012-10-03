@@ -121,7 +121,7 @@ var locator = {
                 _SELF.map.setZoom(14);
                 _SELF.createSearchedLocaitonMarker(location.geometry.location.lat(), location.geometry.location.lng(), _SELF.geocodeResult.formatted_address, false);
                 $('#search-input').blur();
-                window.scrollTo(0, 0.5);
+
             });
         } else {
             //error msg - input missing
@@ -191,6 +191,13 @@ var locator = {
             _SELF.find($('#search-input').val());
             return false;
         });
+        $('#directions-search').submit(function () {
+            $('#search-input').val('');
+            $('#search-input').blur();
+            $('.directionsitem input').blur();
+            window.scrollTo(0, 0.5);
+            return false;
+        });
         $('.dropdown-toggle').click(function () {
             $('.dropdown-toggle').parent().find('.dropdown-menu').toggle();
         });
@@ -223,9 +230,9 @@ var locator = {
                         $('#current-location').html('<i class="icon-screenshot"></i>');
                         $('#search-input').val('Current Location...');
                         $('#search-input').addClass('current-location');
-                        $('#search-input').focus(function () {                            
+                        $('#search-input').focus(function () {
                             $('#search-input').removeClass('current-location');
-                            $('#search-input').val('');                                                        
+                            $('#search-input').val('');
                         });
                     }
                 },
@@ -388,11 +395,15 @@ var locator = {
                         if (errors == 0) {
                             //perform directions request and display result
                             _SELF.directionsService = (_SELF.directionsService ? _SELF.directionsService : new google.maps.DirectionsService());
-                            _SELF.directionsDisplay = (_SELF.directionsDisplay ? _SELF.directionsDisplay : new google.maps.DirectionsRenderer({ draggable: true }));
+                            _SELF.directionsDisplay = (_SELF.directionsDisplay ? _SELF.directionsDisplay : new google.maps.DirectionsRenderer({ draggable: false }));
                             _SELF.directionsDisplay.setMap(_SELF.map);
 
                             _SELF.directionsService.route(request, function (response, status) {
                                 if (status == google.maps.DirectionsStatus.OK) {
+
+                                    _SELF.currentLocationMarker ? _SELF.currentLocationMarker.setMap(null) : '';
+                                    _SELF.searchedLocationMarker ? _SELF.searchedLocationMarker.setMap(null) : '';
+
                                     $('.dropdown-menu').hide();
                                     _SELF.directionsLegsDistance = [];
                                     var legs = response.routes[0].legs;
@@ -660,6 +671,7 @@ var locator = {
             _SELF.windowResize();
             autoCompleteFunction.initAutoComplete('#search-input', _SELF.autoCompleteOptions);
             _SELF.loading(false);
+            $('#current-location').trigger('click');
         }, 500);
     }
 

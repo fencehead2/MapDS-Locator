@@ -256,7 +256,7 @@ var autoCompleteFunction = {
         }).blur(function () {            
             hasFocus = 0;
             if (!config.mouseDownOnSelect) {
-                hideResults();
+                //hideResults();
             }
         }).click(function () {
             // show select when clicking in a focused field

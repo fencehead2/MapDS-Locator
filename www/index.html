@@ -35,38 +35,41 @@
                                             Get Directions
                                         </button>-->
 
-                                        
-                                        <div id="directionsFields">
-                                            <div class="directionsitem">
-                                                <div style="background-repeat: no-repeat;" class="directionsLabel" id="startdirections"><img class="directionsItemIcn" src="../www/img/markers/waypointIcon1.png" alt=""></div>
-                                                <input style="width: 75%;" id="start" name="waypointInput00" class="blur" value="Enter Suburb / Postcode" type="text">                  
-                                                <div style="right: 18px;" id="start-clear" class="clear-input clear-input-dir"></div>
-                                                <div style="display: none;" class="removeDirectionField" title="Remove this destination"></div>
+                                        <form id="directions-search">
+                                            <div id="directionsFields">
+                                                <div class="directionsitem">
+                                                    <div style="background-repeat: no-repeat;" class="directionsLabel" id="startdirections"><img class="directionsItemIcn" src="../www/img/markers/waypointIcon1.png" alt=""></div>
+                                                    <input style="width: 75%;" id="start" name="waypointInput00" class="blur" value="Enter Suburb / Postcode" type="text">                  
+                                                    <div style="right: 18px;" id="start-clear" class="clear-input clear-input-dir"></div>
+                                                    <div style="display: none;" class="removeDirectionField" title="Remove this destination"></div>
+                                                </div>
+                                                <div class="directionsitem">
+                                                    <div style="background-repeat: no-repeat;" class="directionsLabel" id="directionsLabel1"><img class="directionsItemIcn" src="../www/img/markers/waypointIcon2.png" alt=""></div>
+                                                    <input style="width: 75%;" id="end" name="waypointInput01" class="blur" value="Enter Suburb / Postcode" type="text">                
+                                                    <div style="right: 18px;" id="end-clear" class="clear-input clear-input-dir"></div>
+                                                    <div style="display: none;" class="removeDirectionField" title="Remove this destination"></div>
+                                                </div>
                                             </div>
-                                            <div class="directionsitem">
-                                                <div style="background-repeat: no-repeat;" class="directionsLabel" id="directionsLabel1"><img class="directionsItemIcn" src="../www/img/markers/waypointIcon2.png" alt=""></div>
-                                                <input style="width: 75%;" id="end" name="waypointInput01" class="blur" value="Enter Suburb / Postcode" type="text">                
-                                                <div style="right: 18px;" id="end-clear" class="clear-input clear-input-dir"></div>
-                                                <div style="display: none;" class="removeDirectionField" title="Remove this destination"></div>
-                                            </div>
-                                        </div>
                                                                                 
-                                        <div id="directionsControlsContainer">                                        
-                                            <div class="directions" id="directionsControls">
-                                                <div style="" id="addDestination">Add Destination</div><span style="display: inline;" id="controlSeperator"> - </span>
-                                                <div id="hideShowDirOpt">Show Options</div>
-                                                <div class="hidden" id="directionsOptions">
-                                                    <div><input value="avoidhighways" name="avoidhighways" id="avoidhighways" type="checkbox"> <label for="avoidhighways">Avoid highways</label></div>
-                                                    <div><input value="avoidtolls" name="avoidtolls" id="avoidtolls" type="checkbox"> <label for="avoidtolls">Avoid tolls</label></div>
+                                            <div id="directionsControlsContainer">                                        
+                                                <div class="directions" id="directionsControls">
+                                                    <div style="" id="addDestination">Add Destination</div><span style="display: inline;" id="controlSeperator"> - </span>
+                                                    <div id="hideShowDirOpt">Show Options</div>
+                                                    <div class="hidden" id="directionsOptions">
+                                                        <div><input value="avoidhighways" name="avoidhighways" id="avoidhighways" type="checkbox"> <label for="avoidhighways">Avoid highways</label></div>
+                                                        <div><input value="avoidtolls" name="avoidtolls" id="avoidtolls" type="checkbox"> <label for="avoidtolls">Avoid tolls</label></div>
+                                                    </div>
+                                                </div>
+                                                <div id="searchToolbar" class="directions">
+                                                    <div id="searchBtnContainer">
+                                                        <!--<input id="searchBtnDir" value="Show Route" title="Show Route" type="submit">-->
+                                                        <button class="btn btn-primary btn-block" id="searchBtnDir">Show Route</button>
+                                                    </div>
                                                 </div>
                                             </div>
-                                            <div id="searchToolbar" class="directions">
-                                                <div id="searchBtnContainer">
-                                                    <!--<input id="searchBtnDir" value="Show Route" title="Show Route" type="submit">-->
-                                                    <button class="btn btn-primary btn-block" id="searchBtnDir">Show Route</button>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        </form>
+                                        
+                                        
                                         
                                         <!--<div id="directionsListHeading">Route Sumary -</div>            
                                         <table id="directionsList"></table>-->                                            
