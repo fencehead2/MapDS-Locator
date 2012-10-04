@@ -73,11 +73,13 @@ var locator = {
         var popupClass = !isCurrentLocation && !isCluster && id != 'Searched Location' ? 'markerlink' : 'markerlinkcl';
         var popupWidth = !isCurrentLocation && !isCluster ? '175px' : '130px';
 
-        var pixelOffsetx = -58;
-        var pixelOffsety = -92;
+        var pixelOffsetx = -51;
+        var pixelOffsety = -100;
         if (isCurrentLocation == true) {
             pixelOffsetx = -50;
             pixelOffsety = -74;
+        } else if (id == 'Searched Location') {
+            popupWidth = '160px';
         }
 
         if (!isCurrentLocation && displayname.length >= 16) {
@@ -119,8 +121,9 @@ var locator = {
 
     searchedLocationMarkerSettings: {
         img: '../www/img/searched-location.png',
-        height: 40,
-        width: 32
+        shadow: '../www/img/searched-location-shadow.png',
+        height: 74,
+        width: 58
     },
     currentLocationMarker: null,
     currentLocationMarkerSettings: {
@@ -147,7 +150,9 @@ var locator = {
                 position: new google.maps.LatLng(lat, lng),
                 map: this.map,
                 icon: new google.maps.MarkerImage(this.searchedLocationMarkerSettings.img, null, null, null, new google.maps.Size(this.searchedLocationMarkerSettings.width, this.searchedLocationMarkerSettings.height)),
-                title: searchedlocation
+                shadow: new google.maps.MarkerImage(this.searchedLocationMarkerSettings.shadow, null, null, null, new google.maps.Size(100, 90)),
+                title: searchedlocation,
+                optimized: false
             };
         }
         this.currentLocationMarker = new google.maps.Marker(settings);
