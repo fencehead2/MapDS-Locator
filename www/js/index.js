@@ -22,7 +22,7 @@ var locator = {
             this.spinner.center();
             if (isPageLoader == true) {
                 var midScreen = (this.getWindowDimensions().height - 10) / 2;
-                $(selector).css('top', midScreen + 'px');
+                $(selector).css('top', midScreen + 'px');                
             }
         } else {
             $(selector).hide();
@@ -298,8 +298,9 @@ var locator = {
                     }
                 },
             //error
-                function (error) {                 
+                function (error) {
                     _SELF.loading(false, '#current-location-loading', false);
+                    $('#current-location').html('<i class="icon-screenshot"></i>');
                 },
                 { enableHighAccuracy: true, maximumAge: 0 }
             );
