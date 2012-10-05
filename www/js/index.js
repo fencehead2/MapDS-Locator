@@ -298,7 +298,9 @@ var locator = {
                     }
                 },
             //error
-                function (error) { },
+                function (error) {                 
+                    _SELF.loading(false, '#current-location-loading', false);
+                },
                 { enableHighAccuracy: true, maximumAge: 0 }
             );
         });
@@ -726,6 +728,11 @@ var locator = {
                 }
             }
         });
+    },
+
+    browserFix: function() {
+        //ios6 
+
     },
 
     infoBox: null,
