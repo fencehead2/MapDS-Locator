@@ -1,6 +1,159 @@
 //locator functionality of the app
 var locator = {
 
+    features: {
+        featureType: 'POI_FastFoodAu0909',
+        autoCompleteType: 'MDS_SuburbPostcodeAU',
+        featureKey: 'w71InkqT7yND63v12wxVJ01EJ4321aR8L82ET1c0'
+    },
+
+    _lastCentre: null,
+    _lastZoom: null,
+    fitersUpdated: false,
+    moveEnd: function () {
+        if (!this.map || !google) return null;
+        var newCentre = this.map.getCenter();
+        var newZoom = this.map.getZoom();
+        var hasMoved = (Math.abs(this._lastCentre.lat() - newCentre.lat()) > 0.02 || Math.abs(this._lastCentre.lng() - newCentre.lng()) > 0.02) ? true : false;
+        var zoomChanged = newZoom !== Main._lastZoom ? true : false;
+        if (hasMoved || zoomChanged || this.fitersUpdated || this.formSearch) {
+            this._lastCentre = newCentre;
+            this._lastZoom = newZoom;
+            this.fitersUpdated = false;
+            if (!this.openWindow || this.formSearch) {
+                this.getPoints();
+            }
+        }
+    },
+
+    getFilters: function () {
+        return '';
+    },
+
+    getBounds: function () {
+        var bounds = this.Map.getBounds();
+        var boundsList = (bounds).toString().replace(/\(/gi, "").replace(/\)/gi, "");
+        boundsList = boundsList.split(",");
+        return boundsList;
+    },
+
+    isUndefined: function (object) {
+        return typeof object === "undefined";
+    },
+
+    clearMapMarkers: function () {
+        for (var x = 0; x < this.poiList.length; x++) {
+            if (this.poiList[x].hasOwnProperty('marker')) {
+                this.poiList[x].marker.setMap(null);
+            }
+        }
+    },
+
+    minClusterZoom: 14,
+    tripSearch: false,
+    featuresClient: null,
+    poiList: [],
+    formSearch: false,
+    getPoints: function () {
+
+        if (!this.map || !google || !MapDS) return null;
+
+        var _SELF = this;
+        var bounds = this.getBounds();
+
+        if (_SELF.clickInfoBox != null)  _SELF.clickInfoBox.close();
+
+        var queryBounds = new MapDS.Bounds(parseFloat(bounds[1]), parseFloat(bounds[0]), parseFloat(bounds[3]), parseFloat(bounds[2]));
+        var zoom = this.map.getZoom();
+        var p = null;
+
+        if (_SELF.tripSearch == true) {
+            var ll = [];
+            $(_SELF.routePoints).each(function (i) {
+                if ((i % 10) == 0) {
+                    var lat = this.lat().toFixed(6);
+                    var lng = this.lng().toFixed(6);
+                    var routePoint = new MapDS.LatLng(parseFloat(lat), parseFloat(lng));
+                    ll.push(routePoint);
+                }
+            });
+            p = new MapDS.Features.PointsQuery(ll, { buffer: 2000, filter: _SELF.getFilters() });
+        } else {
+            if (zoom < this.minClusterZoom) {
+                p = new MapDS.Features.BBOXQuery(queryBounds, {
+                    cluster: 'distance:60|zoom:' + zoom.toString(),
+                    sortby: 'distance',
+                    filter: _SELF.getFilters()
+                });
+            } else {
+                p = new MapDS.Features.BBOXQuery(queryBounds, {
+                    sortby: 'distance',
+                    filter: _SELF.getFilters()
+                });
+            }
+        }
+        this.featuresClient = this.featuresClient || new MapDS.Features.ServiceClient();
+        this.featuresClient.getFeatures(p, this.featureCode, function (results) {
+            if (!_SELF.isUndefined(results) && !_SELF.isUndefined(results.Features) && results.Features.length > 0) {
+                _SELF.clearMapMarkers();
+                _SELF.poiList = [];
+                for (var i = 0; i < results.Features.length; i++) {
+                    _SELF.poiList.push({
+                        poi: results.Features[i],
+                        marker: _SELF.createMapMarker(results.Features[i], i),
+                        listItem: _SELF.createListItem(results.Features[i], i),
+                        contains: _SELF.poiContainsCount(results.Features[i])
+                    });
+                }
+                _SELF.presentResults();
+            } else {
+                if (_SELF.formSearch) {
+                    //If this is a form search go to findNearest & get the nearest 1 point - no results returned from features
+                    _SELF.formSearch = false;
+                    _SELF.findNearest(_SELF.map.getBounds().getCenter().lat(), _SELF.map.getBounds().getCenter().lng());
+                }
+            }
+            _SELF.formSearch = false;
+        });
+    },
+
+
+    createMapMarker: function(poiItem, id) {                                        
+        var _SELF = this;                
+        var settings = {
+            position: new google.maps.LatLng(poiItem.latitude, poiItem.longitude),
+            map: this.map
+        };
+        if(this.poiContainsCount(poiItem) == 1) {
+           $.extend(settings, {
+                icon: new google.maps.MarkerImage(this.marker.img, null, null, null, new google.maps.Size(42, 63)),
+                title: poiItem.displayname
+            });
+        } else {
+            $.extend(settings, {                
+                icon: new google.maps.MarkerImage(this.clusterMarker.img, null, null, null, new google.maps.Size(42, 63)),
+                title: this.poiContainsCount(poiItem).toString() + ' BP sites in this area'
+            });
+        }        
+        var marker = new google.maps.Marker(settings);        
+        if(this.poiContainsCount(poiItem) == 1) {
+            _SELF.initMarkerEvents(poiItem, marker, id);
+        } else {
+            _SELF.initClusterMarkerEvents(poiItem, marker, id);
+        }
+        return marker;
+    },
+
+    initMarkerEvents: function (poiItem, marker, id) {
+        var _SELF = this;        
+        google.maps.event.addListener(marker, 'click', function () {
+            
+        });
+        google.maps.event.addListener(_SELF.infowindow, 'closeclick', function () {
+            _SELF.openWindow = false;
+        });        
+    },
+
     spinner: null,
     loading: function (isLoading, selector, isPageLoader, settings) {
         selector = selector || '#loading';
@@ -22,7 +175,7 @@ var locator = {
             this.spinner.center();
             if (isPageLoader == true) {
                 var midScreen = (this.getWindowDimensions().height - 10) / 2;
-                $(selector).css('top', midScreen + 'px');                
+                $(selector).css('top', midScreen + 'px');
             }
         } else {
             $(selector).hide();
@@ -66,6 +219,7 @@ var locator = {
         }
     },
 
+    openWindow: false,
     clickInfoBox: null,
     initMarkerEvents: function (marker, id, displayname, Latitude, Longitude, isCurrentLocation, isCluster) {
         var _SELF = this;
@@ -115,6 +269,7 @@ var locator = {
                     enableEventPropagation: false
                 });
                 _SELF.clickInfoBox.open(_SELF.map, marker);
+                _SELF.openWindow = true;
             }
         });
     },
@@ -234,12 +389,14 @@ var locator = {
         $('#search-input').focus(function () {
             if ($(this).val() == 'Current Location...' || $(this).val() == '') {
                 $(this).val('');
+                this.formSearch = true;
             }
         });
         $('#search-input').bind('keypress', function (e) {
             var code = (e.keyCode ? e.keyCode : e.which);
             if (code == 13) {
                 _SELF.find($('#search-input').val());
+                this.formSearch = true;
                 return false;
             }
         });
@@ -731,7 +888,7 @@ var locator = {
         });
     },
 
-    browserFix: function() {
+    browserFix: function () {
         //ios6 
 
     },
